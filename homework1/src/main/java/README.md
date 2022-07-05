@@ -1,1 +1,1 @@
-there are 2 version which simply differs. In numbers.java, for input checking I used try-catch which made code much more simpler to read. While, in numbersV2.java, there is nothing used other than what was covered so far. 
+there are 2 versions which simply differs. In numbers.java, for input checking I used try-catch which made code much more simpler to read. While, in numbersV2.java, there is nothing used other than what was covered so far. Thank you.
