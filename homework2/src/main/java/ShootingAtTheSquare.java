@@ -1,3 +1,4 @@
+//pseudo code I wrote before coding
 /*
 PSEUDO CODE I WROTE BEFORE CODING
 each time program runs:
@@ -28,6 +29,7 @@ if arr["user shot-1"]==2, print "win", break
  */
 
 
+
 import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Random;
@@ -35,26 +37,26 @@ import java.util.Scanner;
 
 public class ShootingAtTheSquare {
     public static void main(String[] args) {
-        /*in most of the lines where could have used [5,5] for limits, used .length,
+        /*in most of the cases where could have used [5,5] for limits, used .length,
         so the size of the square can be asked to user
          */
 
-        //ask user for the size of the square
+        //ask user to input the size of the square
         System.out.print("The size of the square you want to play on: ");
         Scanner in = new Scanner(System.in);
-        int size = in.nextInt();
+        int size = in.nextInt(); //size of the square
 
 
-        //declare variables beforehand
-        int[][] gameField = new int[size][size]; //create 2D array of zeros representing field
+        int[][] gameField = new int[size][size]; //create 2D array of zeros of given size which represents field
 
         Random rnd = new Random();
-        gameField[rnd.nextInt(size)][rnd.nextInt(size)] = 1; //sets the target to 1, randomly
+        gameField[rnd.nextInt(size)][rnd.nextInt(size)] = 1; //to set a target randomly, changes one of the cells of the array to 1, which is target afterwards
 
-        int line = 0; //line to be shooted
-        int bar = 0; //bar to be shooted
+        int line = 0; //line to be shooted, input by user; initialized beforehand not to get "Variable might not be initialized" error thrown
+        int bar = 0; //bar to be shooted, input by user; initialized beforehand not to get "Variable might not be initialized" error thrown
 
         while(true) {
+
             //display the updated game field
             for(int i=0; i<=size; i++) {
                 System.out.print(i+" | ");
@@ -64,13 +66,13 @@ public class ShootingAtTheSquare {
             for(int i=0; i<size; i++) {
                 System.out.print((i+1)+" | ");
                 for(int j=0; j<size; j++) {
-                    if(gameField[i][j]==0 || gameField[i][j]==1) {
+                    if(gameField[i][j]==0 || gameField[i][j]==1) {//cells with 0 or 1 values are the ones not got shot yet
                         System.out.print("- | ");
                     }
-                    if(gameField[i][j]==-1) {
+                    if(gameField[i][j]==-1) {//cells with -1 value are the ones already shot
                         System.out.print("* | ");
                     }
-                    if(gameField[i][j]==2) {
+                    if(gameField[i][j]==2) {//cell with 2 value is the one that was 1 before, got shot, changed to 2 at the end of the previous iteration
                         System.out.print("x | ");
                     }
                 }
@@ -78,12 +80,12 @@ public class ShootingAtTheSquare {
             }
 
             /*
-            if user "shot" at target, target (1) which was already changed to 2,
+            if user "shot" at target which is the already the cell with 2 value
             print "win" message, break the outer while loop
              */
             if(gameField[line][bar]==2) {
                 System.out.println("You have won!");
-                break;
+                break; //breaks outer while loop
             }
 
 
@@ -91,22 +93,23 @@ public class ShootingAtTheSquare {
             while(true) {
                 try {
                     System.out.print("Enter a line for fire: ");
+                    in = new Scanner(System.in);
                     line = in.nextInt()-1;
                     /*
-                    line entered [1,5] converted to position index of game field [0,4] by subtracting 1, the same
-                    for bar number below is applied
+                    line numbers entered in range[1, gameField.length] converted to corresponding position index of game field array which is in range [0,gameField.length-1], by subtracting 1,
+                    the same for bar number is applied below in the next nested while loop (starts at line 116)
                      */
 
-                    if(line<0 || line>size-1) {
+                    if(line<0 || line>size-1) { //if line number entered greater than the size, ask for input again
                         System.out.println("Please, enter a number in range [1, "+size+"]");
-                        continue;
+                        continue; //jumping to next iteration which is basically asking again
                     }
                 }
-                catch (InputMismatchException exc) {
+                catch (InputMismatchException exc) { //if not an integer entered, ask for input again
                     System.out.println("Please, enter an integer..");
                     continue;
                 }
-                break; //if not got into range checking or catch, then number entered is okay, break line input asking
+                break; //if not got into size checking and catch, then number entered is okay, break line number asking while loop
             }
 
 
@@ -114,29 +117,30 @@ public class ShootingAtTheSquare {
             while(true) {
                 try {
                     System.out.print("Enter a shooting bar for fire: ");
+                    in = new Scanner(System.in);
                     bar = in.nextInt()-1;
 
-                    if(bar<0 || bar>size-1) {
+                    if(bar<0 || bar>size-1) {//if bar number entered greater than the size, ask for input again
                         System.out.println("Please, enter a number in range [1, "+size+"]");
-                        continue;
+                        continue; //jumping to next iteration which is basically asking again
                     }
                 }
-                catch (InputMismatchException exc) {
+                catch (InputMismatchException exc) { //if not an integer entered, ask for input again
                     System.out.println("Please, enter an integer..");
                     continue;
                 }
-                break; //if not got into range checking or catch, then number entered is okay, break bar input asking
+                break; //if not got into size checking or catch, then number entered is okay, break bar number asking while loop
             }
 
 
-            if(gameField[line][bar]==-1) { //do not let to shoot at the already shooted cell
+            if(gameField[line][bar]==-1) { //do not let to shoot at the already shooted cell that have -1 value
                 System.out.println("Already shot. Please, shoot at a cell not shot already..");
-                continue;
+                continue; //ask for inputs again by going to next iteration of outer while loop
             }
-            else if(gameField[line][bar]==0) {//if not shot target, set sell to -1
+            else if(gameField[line][bar]==0) {//if the cell is empty and not shot yet, set cell to -1, which implies "already shot"
                 gameField[line][bar] = -1;
             }
-            else {  //else user shot the cell which equals 1, set the cell to 2
+            else {  //else user shot the cell which equals 1 which is the target, set cell to 2, which implies the user won
                 gameField[line][bar] = 2;
             }
         }
