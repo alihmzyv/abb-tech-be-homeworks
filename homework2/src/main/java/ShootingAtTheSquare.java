@@ -84,8 +84,8 @@ public class ShootingAtTheSquare {
         or one of the targets depending on the game type).
          */
         Random rnd = new Random();
-        int firstTargetLine = rnd.nextInt(0, squareSize); //line of the target cell, randomly chose
-        int firstTargetBar = rnd.nextInt(0, squareSize); //bar of the target cell, randomly chose
+        int firstTargetLine = rnd.nextInt(squareSize); //line of the target cell, randomly chose
+        int firstTargetBar = rnd.nextInt(squareSize); //bar of the target cell, randomly chose
         square[firstTargetLine][firstTargetBar] = 1; //changed to 1
 
         /*
@@ -96,7 +96,7 @@ public class ShootingAtTheSquare {
          */
         int count = 0; //count the number of targets that got shot in game 2 - area shooting
         if(gameType==2) {
-            int horizontalOrVertical = rnd.nextInt(0,1); //0 = horizontal, 1 = vertical
+            int horizontalOrVertical = rnd.nextInt(2); //0 = horizontal, 1 = vertical
 
             if(horizontalOrVertical==0) {
                 try {
