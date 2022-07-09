@@ -21,8 +21,7 @@ pseudo code:
 17. if(!inputIsCorrect): sout("Sorry, I don't understand you, please try again.")
  */
 
-import java.util.Arrays;
-import java.util.Locale;
+
 import java.util.Scanner;
 
 public class WeekPlannerUsingLoop {
