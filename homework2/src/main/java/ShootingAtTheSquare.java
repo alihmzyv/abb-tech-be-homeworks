@@ -66,10 +66,11 @@ public class ShootingAtTheSquare {
         Scanner in = new Scanner(System.in);
         int gameType = in.nextInt();
 
+        int squareSize = 5; //size of the square or field
 
-        //ask the user to input the size of the square
-        System.out.println("The size of the square you want to play on: ");
-        int squareSize = in.nextInt(); //size of the square or field
+        //to ask the user to input the size of the square, you can uncomment the code below
+//        System.out.println("The size of the square you want to play on: ");
+//        squareSize = in.nextInt(); //size of the square or field
 
 
         /*
