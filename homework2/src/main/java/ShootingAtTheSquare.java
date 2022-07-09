@@ -58,17 +58,19 @@ import java.util.Scanner;
 public class ShootingAtTheSquare {
     public static void main(String[] args) {
 
-        //ask the user to input the size of the square
-        System.out.println("The size of the square you want to play on: ");
-        Scanner in = new Scanner(System.in);
-        int squareSize = in.nextInt(); //size of the square or field
-
         //ask the user to input the type of the game he or she wants to play:
         //1-for simple type, 2-for "area shooting" type
         System.out.println("The type of the game that you want to play:\n" +
                 "1 - for simple one target\n" +
-                "2 - for area shooting type:");
+                "2 - for area shooting type (the size of the square should be equal to or greater than 3):");
+        Scanner in = new Scanner(System.in);
         int gameType = in.nextInt();
+
+
+        //ask the user to input the size of the square
+        System.out.println("The size of the square you want to play on: ");
+        int squareSize = in.nextInt(); //size of the square or field
+
 
         /*
         create the 2D array of zeros of the input size which represents the square
