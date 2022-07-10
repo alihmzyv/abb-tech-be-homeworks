@@ -49,7 +49,7 @@ public class WeekPlannerUsingLoop {
         while(true) {
             inputIsCorrect = false; //make it false at the beginning of each iteration, if the input will be correct, true will be assigned to below
 
-            System.out.print("Please, input the day of the week: ");
+            System.out.println("Please, input the day of the week: ");
             input = in.nextLine().trim().toLowerCase(); //trim white spaces from the beginning and end, make the input lowercase
 
 
