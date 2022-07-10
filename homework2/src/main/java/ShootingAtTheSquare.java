@@ -191,11 +191,11 @@ public class ShootingAtTheSquare {
             //loop to set line and bar position of the cell to shoot at
             while(true) {
                 try {
-                    System.out.print("Enter a line for fire: ");
+                    System.out.println("Enter a line for fire: ");
                     in = new Scanner(System.in);
                     lineShot = in.nextInt()-1; //convert positions from square display to array index positions
 
-                    System.out.print("Enter a shooting bar for fire: ");
+                    System.out.println("Enter a shooting bar for fire: ");
                     in = new Scanner(System.in);
                     barShot = in.nextInt()-1;
 
