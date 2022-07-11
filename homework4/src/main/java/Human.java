@@ -132,13 +132,25 @@ public class Human{
     //override toString() method
     @Override
     public String toString() {
+        if(mother==null) {
+            return "Human{name='"+name+"',"+
+                    " surname='"+surname+"',"+
+                    " year="+year+"}";
+        }
+        else if(pet==null) {
+            return "Human{name='"+name+"',"+
+                    " surname='"+surname+"',"+
+                    " year="+year+","+
+                    " mother="+mother.name+","+
+                    " father="+father.name+"}";
+        }
         return "Human{name='"+name+"',"+
                 " surname='"+surname+"',"+
                 " year="+year+","+
                 " iq="+iq+","+
                 " mother="+mother.name+","+
-                " father="+father.name+","+
-                pet.toString()+"}";
+                " father="+father.name+", "+
+                pet+"}";
     }
 
 }
