@@ -1,14 +1,14 @@
 public class Main {
     public static void main(String[] args) {
         /*
-        create several families, so that every class uses all the available constructors.
-        Display data about every person.
+        * create several families, so that every class uses all the available constructors.
+        * Display data about every person.
          */
 
         //family1
         System.out.println("Family 1:");
         Human human1 = new Human("Lala", "Gafarova", 1981); //Human constructor #1
-        System.out.println(human1); //firstly calls toString()
+        System.out.println(human1);
         Human human2 = new Human("Kanan", "Baghirov", 1985);
         System.out.println(human2);
         Human human3 = new Human("Nargiz", "Gafarova", 2010, human1, human2); //Human constructor #2
@@ -18,9 +18,9 @@ public class Main {
 
         //family2
         /*
-        In the Main class: create a mother, father, child and his pet.
-        Specify all the needed links (for child to his parents and to the pet), in order to form a full family.
-        Call all available methods for the child (including toString() method) and his pet.
+        * In the Main class: create a mother, father, child and his pet.
+        * Specify all the needed links (for child to his parents and to the pet), in order to form a full family.
+        * Call all available methods for the child (including toString() method) and his pet.
          */
         System.out.println("Family 2:");
         Human human4 = new Human(); //Human constructor #4

@@ -130,8 +130,7 @@ public class Family {
         return sb.toString();
     }
 
-    //for equality: all the fields are compared
-
+    //for equality: all the fields are taken into account
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

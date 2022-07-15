@@ -148,8 +148,7 @@ public class Human {
     }
 
 
-    //for equality: all the fields are compared
-
+    //for equality check: all the fields are taken into account
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

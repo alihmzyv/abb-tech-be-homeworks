@@ -37,7 +37,7 @@ public class Pet {
 
     public void respond() {
         System.out.printf("Hello, owner. I am %s. I miss you!", nickname);
-        System.out.println();
+        System.out.println(); //pass to next line
     }
 
     public void foul() {

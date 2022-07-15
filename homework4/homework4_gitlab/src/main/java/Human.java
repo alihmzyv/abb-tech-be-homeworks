@@ -57,20 +57,24 @@ public class Human {
     }
 
     public boolean feedPet(boolean itIsTimeForFeeding) {
+        /*
+        * if it is fed, print feed message, return true
+        * if it is not, print notFeed message, return false
+        */
         String feed = String.format("Hm... I will feed %s", pet.nickname);
         String notFeed = String.format("I think %s is not hungry.", pet.nickname);
         boolean wasFed = false;
 
-        if (itIsTimeForFeeding) {
+        if (itIsTimeForFeeding) { //if true passed in, feed
             System.out.println(feed);
             wasFed = true;
         }
-        else {
-            if (pet.trickLevel > new Random().nextInt(101)) {
+        else { //if false passed in, compare to a random integer in range [0, 100]
+            if (pet.trickLevel > new Random().nextInt(101)) { //if greater than, feed
                 System.out.println(feed);
                 wasFed = true;
             }
-            else {
+            else { //if not, do not feed
                 System.out.println(notFeed);
             }
         }

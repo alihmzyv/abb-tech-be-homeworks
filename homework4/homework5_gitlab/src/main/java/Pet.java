@@ -7,7 +7,7 @@ public class Pet {
         System.out.println("Pet class is being loaded..");
     }
 
-    //non-static
+
     {
         System.out.println("A Pet type object is created");
     }
@@ -102,6 +102,7 @@ public class Pet {
         return String.format("%s{nickname=%s, age=%d, tricklevel=%d, habits=%s}", species, nickname, age, trickLevel, Arrays.toString(habits));
     }
 
+    //for equality check: habits are not taken into account
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -115,6 +116,6 @@ public class Pet {
         return Objects.hash(species, nickname, age, trickLevel);
     }
 }
-    //for equality: habits are not taken into account
+
 
 
