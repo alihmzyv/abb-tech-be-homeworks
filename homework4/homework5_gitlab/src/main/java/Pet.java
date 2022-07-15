@@ -102,19 +102,19 @@ public class Pet {
         return String.format("%s{nickname=%s, age=%d, tricklevel=%d, habits=%s}", species, nickname, age, trickLevel, Arrays.toString(habits));
     }
 
-
-    //for equality: habits are not taken into account
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pet pet = (Pet) o;
-        return getAge() == pet.getAge() && getTrickLevel() == pet.getTrickLevel() && Objects.equals(getSpecies(), pet.getSpecies()) && Objects.equals(getNickname(), pet.getNickname());
+        return age == pet.age && trickLevel == pet.trickLevel && Objects.equals(species, pet.species) && Objects.equals(nickname, pet.nickname);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getSpecies(), getNickname(), getAge(), getTrickLevel());
+        return Objects.hash(species, nickname, age, trickLevel);
     }
 }
+    //for equality: habits are not taken into account
+
 

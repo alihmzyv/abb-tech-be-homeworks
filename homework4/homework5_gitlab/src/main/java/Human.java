@@ -149,18 +149,19 @@ public class Human {
 
 
     //for equality: all the fields are compared
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Human human = (Human) o;
-        return getYear() == human.getYear() && getIq() == human.getIq() && Objects.equals(getName(), human.getName()) && Objects.equals(getSurname(), human.getSurname()) && Objects.equals(getFamily(), human.getFamily()) && Arrays.deepEquals(getSchedule(), human.getSchedule());
+        return year == human.year && iq == human.iq && Objects.equals(name, human.name) && Objects.equals(surname, human.surname) && Objects.equals(family, human.family) && Arrays.deepEquals(schedule, human.schedule);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(getName(), getSurname(), getFamily(), getYear(), getIq());
-        result = 31 * result + Arrays.deepHashCode(getSchedule());
+        int result = Objects.hash(name, surname, family, year, iq);
+        result = 31 * result + Arrays.deepHashCode(schedule);
         return result;
     }
 }

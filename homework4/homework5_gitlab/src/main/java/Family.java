@@ -131,18 +131,19 @@ public class Family {
     }
 
     //for equality: all the fields are compared
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Family family = (Family) o;
-        return getMother().equals(family.getMother()) && getFather().equals(family.getFather()) && Arrays.deepEquals(getChildren(), family.getChildren()) && Objects.equals(getPet(), family.getPet());
+        return mother.equals(family.mother) && father.equals(family.father) && Arrays.equals(children, family.children) && Objects.equals(pet, family.pet);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(getMother(), getFather(), getPet());
-        result = 31 * result + Arrays.deepHashCode(getChildren());
+        int result = Objects.hash(mother, father, pet);
+        result = 31 * result + Arrays.hashCode(children);
         return result;
     }
 }
