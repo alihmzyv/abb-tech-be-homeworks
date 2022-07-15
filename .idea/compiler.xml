@@ -7,8 +7,9 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="homework1" />
-        <module name="homework4_gitlab" />
         <module name="homework2" />
+        <module name="homework5_gitlab" />
+        <module name="homework4_gitlab" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="18" />

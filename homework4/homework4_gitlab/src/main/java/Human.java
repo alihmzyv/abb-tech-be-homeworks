@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Human {
     String name;
     String surname;
@@ -52,6 +54,28 @@ public class Human {
     public void describePet() {
         System.out.printf("I have a %s, he is %d years old, he is %s", pet.species, pet.age, pet.trickLevel > 50 ? "very sly" : "almost not sly");
         System.out.println();
+    }
+
+    public boolean feedPet(boolean itIsTimeForFeeding) {
+        String feed = String.format("Hm... I will feed %s", pet.nickname);
+        String notFeed = String.format("I think %s is not hungry.", pet.nickname);
+        boolean wasFed = false;
+
+        if (itIsTimeForFeeding) {
+            System.out.println(feed);
+            wasFed = true;
+        }
+        else {
+            if (pet.trickLevel > new Random().nextInt(101)) {
+                System.out.println(feed);
+                wasFed = true;
+            }
+            else {
+                System.out.println(notFeed);
+            }
+        }
+
+        return wasFed;
     }
 
     @Override

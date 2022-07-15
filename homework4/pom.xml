@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>homework4_gitlab</module>
+        <module>homework5_gitlab</module>
     </modules>
 
 
