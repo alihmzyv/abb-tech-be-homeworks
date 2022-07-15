@@ -37,7 +37,7 @@ public class Main {
         System.out.println(human6);
         human6.greetPet();
         human6.describePet();
-        System.out.println(human6.feedPet(false));
+        human6.feedPet(false);
         System.out.println();
 
 
