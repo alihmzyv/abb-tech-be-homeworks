@@ -148,18 +148,18 @@ public class Human {
     }
 
 
-    //for equality check: all the fields are taken into account
+    //for equality check: all the fields are taken into account, except family since then hashcode will be recursive
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Human human = (Human) o;
-        return year == human.year && iq == human.iq && Objects.equals(name, human.name) && Objects.equals(surname, human.surname) && Objects.equals(family, human.family) && Arrays.deepEquals(schedule, human.schedule);
+        return year == human.year && iq == human.iq && Objects.equals(name, human.name) && Objects.equals(surname, human.surname) && Arrays.deepEquals(schedule, human.schedule);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(name, surname, family, year, iq);
+        int result = Objects.hash(name, surname, year, iq);
         result = 31 * result + Arrays.deepHashCode(schedule);
         return result;
     }
