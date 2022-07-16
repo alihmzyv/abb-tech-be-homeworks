@@ -160,7 +160,7 @@ public class Human {
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(name, surname, year, iq, family.getMother().getName(), family.getFather().getName());
+        int result = Objects.hash(name, surname, year, iq, family.getMother().name, family.getFather().name);
         result = 31 * result + Arrays.deepHashCode(schedule);
         return result;
     }
