@@ -58,9 +58,9 @@ public class Human {
 
     public boolean feedPet(boolean itIsTimeForFeeding) {
         /*
-        * if it is fed, print feed message, return true
-        * if it is not, print notFeed message, return false
-        */
+         * if it is fed, print feed message, return true
+         * if it is not, print notFeed message, return false
+         */
         String feed = String.format("Hm... I will feed %s", pet.nickname);
         String notFeed = String.format("I think %s is not hungry.", pet.nickname);
         boolean wasFed = false;
@@ -85,10 +85,10 @@ public class Human {
     @Override
     public String toString() {
         return String.format("Human{name=%s, surname=%s, year=%d, iq=%d, mother=%s, father=%s, pet=%s}",
-                                name, surname, year, iq,
-                                mother == null ? "No data" : mother.name + " " + mother.surname,
-                                father == null ? "No data" : father.name + " " + father.surname,
-                                pet == null ? "No data" : pet.toString());
+                name, surname, year, iq,
+                mother == null ? "No data" : mother.name + " " + mother.surname,
+                father == null ? "No data" : father.name + " " + father.surname,
+                pet == null ? "No data" : pet.toString());
     }
 
 

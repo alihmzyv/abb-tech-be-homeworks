@@ -1,8 +1,8 @@
 public class Main {
     public static void main(String[] args) {
         /*
-        * create several families, so that every class uses all the available constructors.
-        * Display data about every person.
+         * create several families, so that every class uses all the available constructors.
+         * Display data about every person.
          */
 
         //family1
@@ -18,9 +18,9 @@ public class Main {
 
         //family2
         /*
-        * In the Main class: create a mother, father, child and his pet.
-        * Specify all the needed links (for child to his parents and to the pet), in order to form a full family.
-        * Call all available methods for the child (including toString() method) and his pet.
+         * In the Main class: create a mother, father, child and his pet.
+         * Specify all the needed links (for child to his parents and to the pet), in order to form a full family.
+         * Call all available methods for the child (including toString() method) and his pet.
          */
         System.out.println("Family 2:");
         Human human4 = new Human(); //Human constructor #4
@@ -33,7 +33,7 @@ public class Main {
         pet1.foul();
         pet1.respond();
         Human human6 = new Human("Saadat", "Guliyeva", 2002, 95, pet1,
-                                human4, human5, new String[][]{{"Monday", "go to school"}, {"Sunday", "have rest"}}); //Human constructor #3
+                human4, human5, new String[][]{{"Monday", "go to school"}, {"Sunday", "have rest"}}); //Human constructor #3
         System.out.println(human6);
         human6.greetPet();
         human6.describePet();

@@ -29,7 +29,7 @@ public class Human {
         this.surname = surname;
         this.year = year;
     }
-    
+
     //constructor #2
     public Human(String name, String surname, int year, int iq, String[][] schedule) {
         this.name = name;
@@ -38,7 +38,7 @@ public class Human {
         this.iq = iq;
         this.schedule = schedule;
     }
-    
+
     //constructor #3
     public Human(String name, String surname, Family family, int year, int iq, String[][] schedule) {
         this.name = name;
@@ -144,7 +144,7 @@ public class Human {
         Human{name='Name', surname='Surname', year=1, iq=1, schedule=[[day, task], [day_2, task_2]]}
          */
         return String.format("Human{name=%s, surname=%s, year=%d, iq=%d, schedule=%s}",
-                                name, surname, year, iq, Arrays.toString(schedule));
+                name, surname, year, iq, Arrays.toString(schedule));
     }
 
 
