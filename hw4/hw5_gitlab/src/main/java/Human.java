@@ -144,7 +144,7 @@ public class Human {
         Human{name='Name', surname='Surname', year=1, iq=1, schedule=[[day, task], [day_2, task_2]]}
          */
         return String.format("Human{name=%s, surname=%s, year=%d, iq=%d, schedule=%s}",
-                name, surname, year, iq, Arrays.toString(schedule));
+                name, surname, year, iq, Arrays.deepToString(schedule));
     }
 
 
@@ -155,7 +155,7 @@ public class Human {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Human human = (Human) o;
-        return year == human.year && iq == human.iq && Objects.equals(name, human.name) && Objects.equals(surname, human.surname) && Objects.equals(family.getMother().getName(), family.getFather().getName()) && Objects.equals(family.getMother().getSurname(), family.getFather().getSurname()) && Arrays.deepEquals(schedule, human.schedule);
+        return year == human.year && iq == human.iq && Objects.equals(name, human.name) && Objects.equals(surname, human.surname) && Objects.equals(family.getMother().name, human.family.getMother().name) && Objects.equals(family.getFather().name, human.family.getFather().name) && Arrays.deepEquals(schedule, human.schedule);
     }
 
     @Override
