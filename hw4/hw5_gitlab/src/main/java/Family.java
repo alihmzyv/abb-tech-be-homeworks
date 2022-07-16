@@ -18,7 +18,8 @@ public class Family {
     private Pet pet;
 
 
-    //constructor
+    //constructors: at least mother and father should be given, children array is created empty
+    //constructor #1
     public Family(Human mother, Human father) {
         /*
         The only condition for creating a new family is the presence of two parents,
@@ -41,6 +42,19 @@ public class Family {
 
          */
     }
+
+    //constructor #2
+    public Family(Human mother, Human father, Pet pet) {
+        this.mother = mother;
+        this.father = father;
+        this.pet = pet;
+
+        this.mother.setFamily(this);
+        this.father.setFamily(this);
+        children = new Human[0];
+    }
+
+
 
     //getters and setters (none for mother and father, since they should be final
     public Human getMother() {
@@ -125,7 +139,7 @@ public class Family {
         }
 
         //append info about pet
-        sb.append(String.format("Pet=%s\n", pet.toString()));
+        sb.append(pet == null ? "No pet" : String.format("Pet=%s\n", pet.toString()));
 
         return sb.toString();
     }
