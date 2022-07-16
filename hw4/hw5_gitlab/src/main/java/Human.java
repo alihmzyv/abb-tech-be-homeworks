@@ -148,18 +148,19 @@ public class Human {
     }
 
 
-    //for equality check: all the fields are taken into account, except family since then hashcode will be recursive
+    //for equality check: all the fields are taken into account, except family is not directly compared since then family and human comparisons will be recursive.
+    //instead only mother and father name and surnames are compared
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Human human = (Human) o;
-        return year == human.year && iq == human.iq && Objects.equals(name, human.name) && Objects.equals(surname, human.surname) && Arrays.deepEquals(schedule, human.schedule);
+        return year == human.year && iq == human.iq && Objects.equals(name, human.name) && Objects.equals(surname, human.surname) && Objects.equals(family.getMother().getName(), family.getFather().getName()) && Objects.equals(family.getMother().getSurname(), family.getFather().getSurname()) && Arrays.deepEquals(schedule, human.schedule);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(name, surname, year, iq);
+        int result = Objects.hash(name, surname, year, iq, family.getMother().getName(), family.getFather().getName());
         result = 31 * result + Arrays.deepHashCode(schedule);
         return result;
     }
