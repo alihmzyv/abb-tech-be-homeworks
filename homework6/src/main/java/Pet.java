@@ -101,7 +101,8 @@ public class Pet {
 
     @Override
     public String toString() {
-        return String.format("%s{nickname=%s, age=%d, tricklevel=%d, habits=%s}", species, nickname, age, trickLevel, Arrays.toString(habits));
+        return String.format("%s{nickname=%s: Can fly: %s, Has %d legs, Has fur: %s; age=%d, tricklevel=%d, habits=%s}",
+                species, nickname, species.canFly, species.numberOfLegs, species.hasFur, age, trickLevel, Arrays.toString(habits));
     }
 
     //for equality check: habits are not taken into account
