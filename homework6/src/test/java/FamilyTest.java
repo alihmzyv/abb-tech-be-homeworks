@@ -9,7 +9,7 @@ class FamilyTest {
     //test for overrided methods
     @Test
     void toStringShouldReturnCorrectData() {
-        //create family (a family without pet)
+        //create a Family object
         Human father1 = new Human("Mammad", "Karimov", 1976, 100, new String[][]{{DayOfWeek.MONDAY.name(), "go to work"}});
         Human mother1 = new Human();
         Family family1 = new Family(mother1, father1);
@@ -41,14 +41,14 @@ class FamilyTest {
 
 
 
-    // * Make tests for equals() и hashcode():  equals() should return true/false, handle all cases according to the equals contract
+    // * Make tests for equals() and hashcode():  equals() should return true/false, handle all cases according to the equals contract
     // * contracts can be found: https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#equals(java.lang.Object)
     @Test
     void equalsWorksAccordingToContract() {
         //contract1
         // * It is reflexive: for any non-null reference value x, x.equals(x) should return true.
 
-        //create family
+        //create a Family object
         Human father1 = new Human("Mammad", "Karimov", 1976, 100, new String[][]{{DayOfWeek.MONDAY.name(), "go to work"}});
         Human mother1 = new Human();
         Family family1 = new Family(mother1, father1);
@@ -67,7 +67,7 @@ class FamilyTest {
         // * It is symmetric:
         // * for any non-null reference values x and y, x.equals(y) should return true if and only if y.equals(x) returns true.
 
-        //create family
+        //create a Family object
         Human father2 = new Human("Mammad", "Karimov", 1976, 100, new String[][]{{DayOfWeek.MONDAY.name(), "go to work"}});
         Human mother2 = new Human();
         Family family2 = new Family(mother2, father2);
@@ -88,7 +88,7 @@ class FamilyTest {
         // if x.equals(y) returns true and y.equals(z) returns true, then x.equals(z) should return true.
 
         //compare 3 families
-        //create family3
+        //create a Family object
         Human father3 = new Human("Mammad", "Karimov", 1976, 100, new String[][]{{DayOfWeek.MONDAY.name(), "go to work"}});
         Human mother3 = new Human();
         Family family3 = new Family(mother3, father3);
@@ -109,19 +109,86 @@ class FamilyTest {
         // for any non-null reference values x and y,
         // multiple invocations of x.equals(y) consistently return true or consistently return false,
         // provided no information used in equals comparisons on the objects is modified.
-        // since all the fields are compared in Family class equals() method, it is tested that,
-        // if info used in equals comparisons is modified, equals() will return opposite of that returned before
-        boolean equalityBefore = family1.equals(family2); //true
-        family1.deleteChild(child1);
-        boolean contract4 = equalityBefore ^ family1.equals(family2); //true ^ false = true
+        boolean consistentEquality = family1.equals(family2); //true
+        boolean contract4 = true;
+
+        //check consistently 100 times, provided no information used in equals comparisons changed
+        for (int i = 0; i < 100; i++) {
+            if (!family1.equals(family2)) {
+                contract4 = false;
+                break;
+            }
+        }
+
 
         //contract 5
         // * For any non-null reference value x, x.equals(null) should return false.
         boolean contract5 = family1.equals(null); //false
 
 
-        //collect all contracts in one boolean
+        //collect all contracts into one boolean
         boolean actual = contract1 && contract2 && contract3 && contract4 && !contract5;
+        assertTrue(actual);
+    }
+
+    @Test
+    void hashCodeWorksAccordingToContract() {
+        //contract1
+        // * Whenever it is invoked on the same object more than once during an execution of a Java application,
+        // the hashCode method must consistently return the same integer,
+        // provided no information used in equals comparisons on the object is modified.
+        // This integer need not remain consistent from one execution of an application to another execution of the same application.
+
+        //create a Family object
+        Human father1 = new Human("Mammad", "Karimov", 1976, 100, new String[][]{{DayOfWeek.MONDAY.name(), "go to work"}});
+        Human mother1 = new Human();
+        Family family1 = new Family(mother1, father1);
+        Human child1 = new Human();
+        Human child2 = new Human("Anar", "Karimov", 1999, 101, new String[][]{{DayOfWeek.MONDAY.name(), "go to school"}});
+        Human child3 = new Human("Ulkar", "Karimova", 1998, 99, new String[][]{{DayOfWeek.MONDAY.name(), "go to party"}});
+
+        family1.addChild(child1);
+        family1.addChild(child2);
+        family1.addChild(child3);
+
+        int consistentHashCode = family1.hashCode();
+        boolean contract1 = true;
+
+        for (int j = 0; j < 100; j++) {
+            if (family1.hashCode() != consistentHashCode) {
+                contract1 = false;
+                break;
+            }
+        }
+
+
+        //contract2
+        // * If two objects are equal according to the equals(Object) method,
+        // then calling the hashCode method on each of the two objects must produce the same integer result.
+
+        //create family2 equal to family1
+        Human father2 = new Human("Mammad", "Karimov", 1976, 100, new String[][]{{DayOfWeek.MONDAY.name(), "go to work"}});
+        Human mother2 = new Human();
+        Family family2 = new Family(mother2, father2);
+
+        Human child4 = new Human();
+        Human child5 = new Human("Anar", "Karimov", 1999, 101, new String[][]{{DayOfWeek.MONDAY.name(), "go to school"}});
+        Human child6 = new Human("Ulkar", "Karimova", 1998, 99, new String[][]{{DayOfWeek.MONDAY.name(), "go to party"}});
+
+        family2.addChild(child4);
+        family2.addChild(child5);
+        family2.addChild(child6);
+
+        boolean contract2 = (family1.hashCode() == family2.hashCode());
+
+
+        //contract3 - not e requirement, thus not implemented as test
+        // * It is not required that if two objects are unequal according to the equals(java.lang.Object) method,
+        // then calling the hashCode method on each of the two objects must produce distinct integer results.
+        // However, the programmer should be aware that producing distinct integer results for unequal objects may improve the performance of hash tables.
+
+        //collect all contracts into one boolean
+        boolean actual = contract1 && contract2;
         assertTrue(actual);
     }
 
