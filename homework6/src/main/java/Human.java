@@ -156,12 +156,16 @@ public class Human {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Human human = (Human) o;
-        return year == human.year && iq == human.iq && Objects.equals(name, human.name) && Objects.equals(surname, human.surname) && Objects.equals(family.getMother().name, human.family.getMother().name) && Objects.equals(family.getFather().name, human.family.getFather().name) && Arrays.deepEquals(schedule, human.schedule);
+        return year == human.year && iq == human.iq && Objects.equals(name, human.name) && Objects.equals(surname, human.surname) && Arrays.deepEquals(schedule, human.schedule) &&
+                (family == null || (Objects.equals(family.getMother().name, human.family.getMother().name) && Objects.equals(family.getFather().name, human.family.getFather().name)));
     }
+
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(name, surname, year, iq, family.getMother().name, family.getFather().name);
+        int result = Objects.hash(name, surname, year, iq,
+                (family != null ? family.getMother().name: null),
+                (family != null ? family.getFather().name: null));
         result = 31 * result + Arrays.deepHashCode(schedule);
         return result;
     }
