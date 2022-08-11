@@ -3,13 +3,16 @@ public class Dog extends Pet implements NastyThings {
     //constructors
     public Dog(String nickname) {
         super(nickname);
+        this.setSpecies(Species.DOG);
     }
 
     public Dog(String nickname, int age, int trickLevel, String[] habits) {
         super(nickname, age, trickLevel, habits);
+        this.setSpecies(Species.DOG);
     }
 
     public Dog() {
+        this.setSpecies(Species.DOG);
     }
 
 

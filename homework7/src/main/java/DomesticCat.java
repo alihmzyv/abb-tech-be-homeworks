@@ -2,13 +2,16 @@ public class DomesticCat extends Pet implements NastyThings {
     //constructors
     public DomesticCat(String nickname) {
         super(nickname);
+        this.setSpecies(Species.DOMESTIC_CAT);
     }
 
     public DomesticCat(String nickname, int age, int trickLevel, String[] habits) {
         super(nickname, age, trickLevel, habits);
+        this.setSpecies(Species.DOMESTIC_CAT);
     }
 
     public DomesticCat() {
+        this.setSpecies(Species.DOMESTIC_CAT);
     }
 
 

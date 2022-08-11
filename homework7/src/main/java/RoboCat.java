@@ -2,13 +2,16 @@ public class RoboCat extends Pet implements NastyThings {
     //constructors
     public RoboCat(String nickname) {
         super(nickname);
+        this.setSpecies(Species.ROBO_CAT);
     }
 
     public RoboCat(String nickname, int age, int trickLevel, String[] habits) {
         super(nickname, age, trickLevel, habits);
+        this.setSpecies(Species.ROBO_CAT);
     }
 
     public RoboCat() {
+        this.setSpecies(Species.ROBO_CAT);
     }
 
 
