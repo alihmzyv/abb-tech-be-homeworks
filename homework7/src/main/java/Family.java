@@ -171,7 +171,7 @@ public class Family implements HumanCreator {
     @Override
     public Human bornChild() {
         //The sex of the child is defined casually with the 50%/50% probability.
-        Integer sex = new Random().nextInt(2); //0 - for Man, 1 - for Woman, 50/50 probability for each sex
+        int sex = new Random().nextInt(2); //0 - for Man, 1 - for Woman, 50/50 probability for each sex
 
         //create Man or Woman object based on random sex
         Human child = (sex == 0) ? new Man() : new Woman();
@@ -191,7 +191,7 @@ public class Family implements HumanCreator {
 
         //set child's surname to his or her father's one
         String surname = father.getSurname();
-        child.setSurname(String.format("%s", (sex.equals(0)) ? surname : surname + "a"));
+        child.setSurname(String.format("%s", (sex == 0) ? surname : surname + "a"));
 
         //set child's IQ to average of those of his or her mother and father
         child.setIq((father.getIq() + mother.getIq()) / 2);
