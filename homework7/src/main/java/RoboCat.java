@@ -1,4 +1,4 @@
-public class RoboCat extends Pet {
+public class RoboCat extends Pet implements NastyThings {
     //constructors
     public RoboCat(String nickname) {
         super(nickname);

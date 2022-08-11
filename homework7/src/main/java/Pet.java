@@ -92,9 +92,6 @@ public abstract class Pet {
 
     public abstract void respond();
 
-    public void foul() {
-        System.out.println("I need to cover it up");
-    }
 
     @Override
     public String toString() {

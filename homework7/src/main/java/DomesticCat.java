@@ -1,4 +1,4 @@
-public class DomesticCat extends Pet {
+public class DomesticCat extends Pet implements NastyThings {
     //constructors
     public DomesticCat(String nickname) {
         super(nickname);
