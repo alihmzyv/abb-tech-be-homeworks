@@ -10,13 +10,6 @@ public abstract class Pet {
     }
 
 
-    {
-        species = Species.UNKNOWN;
-        System.out.println("A Pet type object is created");
-        System.out.println("Species set to UNKNOWN");
-    }
-
-
     private Species species;
     private String nickname;
     private int age;
@@ -24,6 +17,11 @@ public abstract class Pet {
     private String[] habits;
 
 
+
+    {
+        species = Species.UNKNOWN;
+        System.out.println("A Pet type object is created");
+    }
     //constructors
     //constructor #1
     public Pet(String nickname) {
