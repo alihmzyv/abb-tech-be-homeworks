@@ -14,6 +14,7 @@
         <module name="hw4_gitlab" />
         <module name="homework7" />
         <module name="homework6" />
+        <module name="homework8" />
         <module name="homework5_gitlab_previous_version" />
       </profile>
     </annotationProcessing>

@@ -1,0 +1,14 @@
+import java.util.List;
+import java.util.Map;
+
+public class Main {
+    public static void main(String[] args) {
+        for (int i = 0; i < 200_000; i++) {
+            //object reference not assigned to any variable, thus will be probably ready to be garbage collected
+            new Human("Ali", "Hamzayev", 2001, 100,
+                    Map.of(DayOfWeek.MONDAY, List.of("go to work, come home"),
+                            DayOfWeek.TUESDAY, List.of("go to library")));
+        }
+    }
+}
+
