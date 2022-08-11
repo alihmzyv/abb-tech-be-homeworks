@@ -1,3 +1,5 @@
+import javax.sound.midi.Soundbank;
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class Family implements HumanCreator {
@@ -105,7 +107,7 @@ public class Family implements HumanCreator {
             return true;
         }
         catch (ArrayIndexOutOfBoundsException exc) { //only exception that can be thrown
-            System.out.println(exc);
+            System.out.println("There is no child at the index");
             return false;
         }
     }
@@ -187,8 +189,12 @@ public class Family implements HumanCreator {
         //set child's name randomly
         child.setName(namesMap.get(sex).get(new Random().nextInt(namesMap.get(sex).size())));
 
+        //set child's surname to his or her father's one
+        String surname = father.getSurname();
+        child.setSurname(String.format("%s", (sex.equals(0)) ? surname : surname + "a"));
+
         //set child's IQ to average of those of his or her mother and father
-        child.setIq((this.father.getIq() + this.mother.getIq()) / 2);
+        child.setIq((father.getIq() + mother.getIq()) / 2);
 
         return child;
     }
