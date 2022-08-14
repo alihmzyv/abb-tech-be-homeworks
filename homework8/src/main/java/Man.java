@@ -21,16 +21,15 @@ public final class Man extends Human {
 
     //methods
     public void repairCar() {
-        System.out.println("I repaired car");
+        System.out.println("I repaired the car");
     }
 
 
     //override methods
     @Override
     public void greetPet() {
-        System.out.printf("Hello, I am a %s, %s\n",
-                getClass().getName().toLowerCase(),
-                getFamily().getPet().toString().replaceAll("\\[|\\]", ""));
+        super.greetPet();
+        System.out.println("I am a man");
     }
 
 

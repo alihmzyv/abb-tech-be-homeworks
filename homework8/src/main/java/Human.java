@@ -2,6 +2,15 @@ import java.util.*;
 
 public class Human {
 
+    //fields
+    private String name;
+    private String surname;
+    private Family family;
+    private int year;
+    private int iq;
+    private Map<DayOfWeek, List<String>> schedule;
+
+
     static {
         System.out.println("Human class is being loaded..");
     }
@@ -11,13 +20,6 @@ public class Human {
         System.out.println("A Human type object is created");
     }
 
-
-    private String name;
-    private String surname;
-    private Family family;
-    private int year;
-    private int iq;
-    private Map<DayOfWeek, List<String>> schedule;
 
 
     //constructors
@@ -106,50 +108,54 @@ public class Human {
 
     //methods
     public void greetPet() {
-        //greet all pets
-        StringBuilder sb = new StringBuilder("Hello, ");
-        Iterator<Pet> petIterator = family.getPet().iterator();
-
-        while (petIterator.hasNext()) {
-            sb.append(petIterator.next()).append(",");
+        //now pet is Set<Pet>, modified to greet all the pets
+        Set<Pet> pets = family.getPet();
+        List<String> namesOfPets = new ArrayList<>();
+        for (Pet pet: pets) {
+            namesOfPets.add(pet.getNickname());
         }
-        sb.deleteCharAt(sb.length() - 1); //delete last comma
-
-        System.out.printf("Hello, %s\n", sb);
+        System.out.printf("Hello, %s\n", namesOfPets.toString().replaceAll("\\[\\]", ""));
     }
 
     public void describePet() {
-        //describe all pets
-        for (Pet pet: family.getPet()) {
-            System.out.printf("I have a %s, he is %d years old, he is %s\n",
-                            pet.getSpecies(), pet.getAge(), pet.getTrickLevel() > 50 ? "very sly" : "almost not sly");
+        //now pet is Set<Pet>, modified to describe all the pets
+        Set<Pet> pets = family.getPet();
+        StringBuilder sb = new StringBuilder();
+        sb.append("I have a ");
+
+        for (Pet pet: pets) {
+            sb.append(String.format("%s, he is %d years old, he is %s;\n",
+                    pet.getSpecies(), pet.getAge(), pet.getTrickLevel() > 50 ? "very sly" : "almost not sly"));
         }
+
+        System.out.println(sb);
     }
 
     public boolean feedPet(boolean itIsTimeForFeeding) {
-        //feed all pets
-        String feedAll = String.format("Hm... I will feed %s",
-                                        family.getPet().toString().replaceAll("\\[\\]", ""));
-        String feed = "Hm... I will feed %s"; //%s - nickname
-        String doNotFeed = "I think %s is not hungry."; //%s - nickname
-        boolean allWereFed = true;
+        //returns true if all the pets were fed, otherwise false
+        String feed = "Hm... I will feed %s";
+        String doNotFeed = "I think %s is not hungry.";
+        int countOnesFed = 0;
+        Set<Pet> pets = family.getPet();
 
         if (itIsTimeForFeeding) {
-            System.out.println(feedAll);
+            countOnesFed = family.getPet().size();
+            System.out.println("Hm... I will feed all the pets");
         }
         else {
-            for (Pet pet: family.getPet()) {
+            for (Pet pet: pets) {
+                String nicknameOfPet = pet.getNickname();
                 if (pet.getTrickLevel() > new Random().nextInt(101)) {
-                    System.out.printf(feed+"\n", pet.getNickname());
+                    System.out.printf(feed + "\n", nicknameOfPet);
+                    countOnesFed++;
                 }
                 else {
-                    System.out.printf(doNotFeed+"\n", pet.getNickname());
-                    allWereFed = false;
+                        System.out.printf(doNotFeed + "\n", nicknameOfPet);
                 }
             }
         }
 
-        return allWereFed;
+        return countOnesFed == pets.size();
     }
 
     @Override
@@ -162,18 +168,24 @@ public class Human {
     }
 
 
+    //for equality check: all the fields are taken into account, except family is not directly compared since then family and human comparisons will be recursive.
+    //instead only mother and father name and surnames are compared
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Human human = (Human) o;
-        return year == human.year && iq == human.iq && Objects.equals(name, human.name)
-                && Objects.equals(surname, human.surname) && Objects.equals(schedule, human.schedule);
+        return year == human.year && iq == human.iq && Objects.equals(name, human.name) && Objects.equals(surname, human.surname) && Objects.equals(schedule, human.schedule) &&
+                (family == null || (Objects.equals(family.getMother().name, human.family.getMother().name) && Objects.equals(family.getFather().name, human.family.getFather().name)));
     }
+
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, surname, year, iq, schedule);
+        int result = Objects.hash(name, surname, year, iq,
+                (family != null ? family.getMother().name: null),
+                (family != null ? family.getFather().name: null), schedule);;
+        return result;
     }
 
     @Override

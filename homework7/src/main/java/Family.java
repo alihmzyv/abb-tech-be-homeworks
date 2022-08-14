@@ -199,6 +199,7 @@ public class Family implements HumanCreator {
         //set child's IQ to average of those of his or her mother and father
         child.setIq((father.getIq() + mother.getIq()) / 2);
 
+        this.addChild(child);
         return child;
     }
 }

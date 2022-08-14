@@ -11,7 +11,7 @@ public abstract class Pet {
     }
 
 
-    private Species species;
+    private Species species = Species.UNKNOWN;
     private String nickname;
     private int age;
     private int trickLevel;
@@ -20,7 +20,6 @@ public abstract class Pet {
 
 
     {
-        species = Species.UNKNOWN;
         System.out.println("A Pet type object is created");
     }
     //constructors
@@ -98,13 +97,12 @@ public abstract class Pet {
                 species, nickname, species.canFly, species.numberOfLegs, species.hasFur, age, trickLevel, habits);
     }
 
-    //for equality check: habits are not taken into account
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pet pet = (Pet) o;
-        return age == pet.age && trickLevel == pet.trickLevel && Objects.equals(species, pet.species) && Objects.equals(nickname, pet.nickname);
+        return age == pet.age && trickLevel == pet.trickLevel && species == pet.species && Objects.equals(nickname, pet.nickname);
     }
 
     @Override

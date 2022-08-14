@@ -26,6 +26,8 @@ public final class Woman extends Human {
     //override methods
     @Override
     public void greetPet() {
-        System.out.printf("Hello, I am a %s, %s", getClass().getName().toLowerCase(), getFamily().getPet().toString().replaceAll("\\[|\\]", ""));
+        super.greetPet();
+        System.out.println("I am a man");
+        ;
     }
 }

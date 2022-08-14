@@ -26,7 +26,7 @@ class FamilyTest {
         //String nickname, int age, int trickLevel, Set<String> habits
         Pet pet1 = new Dog("Toplan", 2, 33, Set.of("barking"));
         Pet pet2 = new Fish("Nemo");
-        Set<Pet> petSet = new HashSet<>(Set.of(pet1, pet2));
+        Set<Pet> petSet = Set.of(pet1, pet2);
         family1.setPet(petSet);
 
         //build expected String to be returned
@@ -36,10 +36,20 @@ class FamilyTest {
         sb.append(String.format("Mother=%s\nFather=%s\n", mother1, father1));
 
         //append info about each children
-        sb.append(String.format("Children:\n%s\n", family1.getChildren()));
+        List<Human> children = family1.getChildren();
+        for (int i = 0; i < children.size(); i++) {
+            sb.append(String.format("Child %d=%s\n", i + 1, children.get(i)));
+        }
 
         //append info about pets
-        sb.append(String.format("Pets=%s\n", petSet));
+        Set<Pet> pets = family1.getPet();
+        if (pets != null) {
+            Iterator<Pet> petIterator = pets.iterator();
+            for (int i = 0; i < pets.size(); i++) {
+                sb.append(String.format("Pet %d=%s\n", i + 1, petIterator.next()));
+            }
+        }
+
 
         String expected = sb.toString();
         assertEquals(expected, family1.toString());
@@ -65,7 +75,7 @@ class FamilyTest {
 
         family1.addChild(child1);
         family1.addChild(child2);
-        family1.addChild(child3); //currently children array = {child1, child2, child3}
+        family1.addChild(child3); //currently children list = [child1, child2, child3]
 
         boolean contract1 = family1.equals(family1); //true
 
@@ -201,8 +211,8 @@ class FamilyTest {
     @Test
     void deleteChildTest1() {//deleteChild(Human child) version
         /*
-        checking if the child is actually being removed from the children array
-        (if you pass an object that is equivalent to at least one element of the array);
+        checking if the child is actually being removed from the children list
+        (if you pass an object that is equivalent to at least one element of the list);
          */
 
         //create family
@@ -215,16 +225,16 @@ class FamilyTest {
 
         family1.addChild(child1);
         family1.addChild(child2);
-        family1.addChild(child3); //currently children array = {child1, child2, child3}
+        family1.addChild(child3); //currently children list = [child1, child2, child3]
 
-        family1.deleteChild(child2); //child2 matches, thus children arr = {child1, child3};
+        family1.deleteChild(child2); //child2 matches, thus children list now = [child1, child3];
         assertEquals(family1.getChildren(), List.of(child1, child3));
     }
 
     @Test
     void deleteChildTest2() {//deleteChild(Human child) version
         /*
-        check if the children array remains unchanged (if you pass an object that is not equivalent to any array element)
+        check if the children list remains unchanged (if you pass an object that is not equivalent to a list element)
          */
         //create family
         Human father1 = new Human("Mammad", "Karimov", 1976, 100, Map.of(DayOfWeek.MONDAY, List.of("go to work")));
@@ -237,9 +247,7 @@ class FamilyTest {
         family1.addChild(child1);
         family1.addChild(child3); //did not add child2
 
-        //create a copy of children arr to check whether the array will remain the same after an unsuccessful delete
-        //while it is a shallow copy, since the change can be the removal of a Human object element, thus will not be reflected on this shallow copy
-        //but if any field of a Human object of children arr would change, the change would be reflected on this copy as well.
+        //create a copy of children list to check whether the list will remain the same after an unsuccessful delete
         List<Human> childrenCopy = List.copyOf(family1.getChildren());
 
 
@@ -251,7 +259,7 @@ class FamilyTest {
     @Test
     void deleteChildTest3() { //deleteChild(int index) version
         /*
-        check that the child is actually being removed from the children array and the method returns the correct value;
+        check that the child is actually being removed from the children list and the method returns the correct value;
          */
         //create family
         Human father1 = new Human("Mammad", "Karimov", 1976, 100, Map.of(DayOfWeek.MONDAY, List.of("go to work")));
@@ -265,15 +273,15 @@ class FamilyTest {
         family1.addChild(child2);
         family1.addChild(child3);
 
-        // * family1.deleteChild(0) removes the child at the index = 1, returns true
-        // * children arr will be updated to arr = {child1, child3}
-        assertTrue(family1.deleteChild(0) && family1.getChildren().equals(List.of(child1, child3)));
+        // * family1.deleteChild(1) removes the child at the index = 1, returns true
+        // * children arr will be updated to arr = [child1, child3]
+        assertTrue(family1.deleteChild(1) && family1.getChildren().equals(List.of(child1, child3)));
     }
 
     @Test
     void deleteChildTest4() { //deleteChild(int index) version
         /*
-        check that the children array remains unchanged (if you pass an index outside the index range) and
+        check that the children list remains unchanged (if you pass an index outside the index range) and
         the method returns the correct value;
          */
         //create family
@@ -288,22 +296,20 @@ class FamilyTest {
         family1.addChild(child2);
         family1.addChild(child3);
 
-        //create a copy of children arr to check whether the array will remain the same after an unsuccessful delete
-        //while it is a shallow copy, since the change can be the removal of a Human object element, thus will not be reflected on this shallow copy
-        //but if any field of a Human object of children arr would change, the change would be reflected on this copy as well.
+        //create a copy of children list to check whether the array will remain the same after an unsuccessful delete
         List<Human> childrenCopy = List.copyOf(family1.getChildren());
 
 
-        // * family1.deleteChild(2) tries to remove child at index = 2 + 1 which is out of bounds of children array,
+        // * family1.deleteChild(3) tries to remove child at index = 3 which is out of bounds of children list,
         // thus returns false according to method
-        // * children arr remains the same
-        assertTrue(!family1.deleteChild(2) && childrenCopy.equals(family1.getChildren()));
+        // * children list remains the same
+        assertTrue(!family1.deleteChild(3) && childrenCopy.equals(family1.getChildren()));
     }
 
     @Test
     void addChildTest1() {
         /*
-        check that the  children array increases by one element and
+        check that the  children list increases by one element and
         that this element is the passed object with all the necessary references;
          */
 

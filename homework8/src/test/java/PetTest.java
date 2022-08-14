@@ -5,7 +5,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DogTest {
+class PetTest {
 
     @Test
     void toStringShouldReturnCorrectData() {
