@@ -2,19 +2,22 @@ import java.util.*;
 
 public class Family implements HumanCreator {
 
+    //fields
+    final private Human mother;
+    final private Human father;
+    private List<Human> children = new ArrayList<>(); //initialized as an empty list as required before (refer to hw 5)
+    private Set<Pet> pet;
+
+
+    //static block
     static {
         System.out.println("Family class is being loaded..");
     }
 
-    //non-static
+    //non-static block
     {
         System.out.println("A Family type object is created");
     }
-
-    final private Human mother;
-    final private Human father;
-    private List<Human> children;
-    private Set<Pet> pets;
 
 
     //constructors: at least mother and father should be given, children array is created empty
@@ -33,23 +36,21 @@ public class Family implements HumanCreator {
         //to this family object
         this.mother.setFamily(this);
         this.father.setFamily(this);
-        children = new ArrayList<>();
     }
 
     //constructor #2
-    public Family(Human mother, Human father, Set<Pet> pets) {
+    public Family(Human mother, Human father, Set<Pet> pet) {
         this.mother = mother;
         this.father = father;
-        this.pets = pets;
+        this.pet = pet;
 
         this.mother.setFamily(this);
         this.father.setFamily(this);
-        children = new ArrayList<>();
     }
 
 
 
-    //getters and setters (none for mother and father, since they are final
+    //getters and setters (none (setter) for mother and father, since they are final)
     public Human getMother() {
         return mother;
     }
@@ -67,43 +68,49 @@ public class Family implements HumanCreator {
     }
 
     public Set<Pet> getPet() {
-        return pets;
+        return pet;
     }
 
-    public void setPet(Set<Pet> pets) {
-        this.pets = pets;
+    public void setPet(Set<Pet> pet) {
+        this.pet = pet;
     }
 
 
     //methods
     public boolean addChild(Human human) {
-        children.add(human);
+        children.add(human); //add the child
         human.setFamily(this); //sets the families of both the parameter object and element of field array children
         return true; //added
     }
 
-    public boolean deleteChild(int arrIndex) { //removes the child at the following index
-        //to remove Human object at arrIndex + 1
-        //create 2 arrays representing children array but the element at arrIndex + 1
-        //then join both arrays and assign it to children array variable
-
+    public boolean deleteChild(int arrIndex) {
+        //removes the child at the given index
+        //in previous homeworks, i defined this method to delete child at the following (index + 1) index.
+        //turns out it was a translation mistake
+        //compare:
+        // translated version:
+        // https://gitlab.com/dan-it/az-groups/az-be5/-/tree/main/en/homework5
+        //original russian version, which states "given", instead of "following":
+        //https://gitlab.com/dan-it/az-groups/az-be5/-/tree/main/ru/homework5
         try {
-            children.get(arrIndex + 1).setFamily(null);
-            children.remove(arrIndex + 1);
+            children.get(arrIndex).setFamily(null); //removes the child's link to the family (+ the link of the object that was added as a child, which is of the importance here)
+            children.remove(arrIndex);
             return true;
         }
         catch (IndexOutOfBoundsException exc) { //only exception that can be thrown
-            System.out.println("There is no child at the index");
+            System.out.println("There is no child at the given index");
             return false;
         }
     }
 
     public boolean deleteChild(Human human) {
-        if (children.indexOf(human) >= 0 && children.indexOf(human) < children.size()) {
-            children.get(children.indexOf(human)).setFamily(null);
-            return children.remove(human);
+        int indexOfChild = children.indexOf(human);
+        if (indexOfChild != -1) {
+            return deleteChild(indexOfChild);
         }
-        return false;
+        else {
+            return false;
+        }
     }
 
     public int countFamily() {
@@ -118,10 +125,17 @@ public class Family implements HumanCreator {
         sb.append(String.format("Mother=%s\nFather=%s\n", mother, father));
 
         //append info about each children
-        sb.append(String.format("Children:\n%s\n", children));
+        for (int i = 0; i < children.size(); i++) {
+            sb.append(String.format("Child %d=%s\n", i + 1, children.get(i)));
+        }
 
-        //append info about pet
-        sb.append(String.format("Pets=%s\n", pets));
+        //append info about pets
+        if (pet != null) {
+            Iterator<Pet> petIterator = pet.iterator();
+            for (int i = 0; i < pet.size(); i++) {
+                sb.append(String.format("Pet %d=%s\n", i + 1, petIterator.next()));
+            }
+        }
 
         return sb.toString();
     }
@@ -131,13 +145,12 @@ public class Family implements HumanCreator {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Family family = (Family) o;
-        return Objects.equals(mother, family.mother) && Objects.equals(father, family.father)
-                && Objects.equals(children, family.children) && Objects.equals(pets, family.pets);
+        return Objects.equals(mother, family.mother) && Objects.equals(father, family.father) && Objects.equals(children, family.children) && Objects.equals(pet, family.pet);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mother, father, children, pets);
+        return Objects.hash(mother, father, children, pet);
     }
 
     @Override
@@ -169,12 +182,12 @@ public class Family implements HumanCreator {
 
         //set child's surname to his or her father's one
         String surname = father.getSurname();
-        child.setSurname(String.format("%s", (sex == 0) ? surname : surname + "a"));
+        child.setSurname(String.format("%s", (sex == 0) ? surname : surname + "a")); //a suffix addition to female surnames
 
         //set child's IQ to average of those of his or her mother and father
         child.setIq((father.getIq() + mother.getIq()) / 2);
-        children.add(child); //add child to children list
 
+        this.addChild(child);
         return child;
     }
 }
