@@ -173,7 +173,7 @@ public class Human {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, surname, family, year, iq, schedule);
+        return Objects.hash(name, surname, year, iq, schedule);
     }
 
     @Override

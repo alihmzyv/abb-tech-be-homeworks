@@ -88,7 +88,8 @@ public class Family implements HumanCreator {
         //then join both arrays and assign it to children array variable
 
         try {
-            children.remove(arrIndex);
+            children.get(arrIndex + 1).setFamily(null);
+            children.remove(arrIndex + 1);
             return true;
         }
         catch (IndexOutOfBoundsException exc) { //only exception that can be thrown
@@ -98,7 +99,11 @@ public class Family implements HumanCreator {
     }
 
     public boolean deleteChild(Human human) {
-        return children.remove(human);
+        if (children.indexOf(human) >= 0 && children.indexOf(human) < children.size()) {
+            children.get(children.indexOf(human)).setFamily(null);
+            return children.remove(human);
+        }
+        return false;
     }
 
     public int countFamily() {
