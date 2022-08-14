@@ -10,7 +10,7 @@ public abstract class Pet {
     }
 
 
-    private Species species;
+    private Species species = Species.UNKNOWN;
     private String nickname;
     private int age;
     private int trickLevel;
@@ -19,7 +19,6 @@ public abstract class Pet {
 
 
     {
-        species = Species.UNKNOWN;
         System.out.println("A Pet type object is created");
     }
     //constructors

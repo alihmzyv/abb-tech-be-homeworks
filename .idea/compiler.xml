@@ -18,8 +18,6 @@
         <module name="homework5_gitlab_previous_version" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="18">
-      <module name="homework4" target="1.5" />
-    </bytecodeTargetLevel>
+    <bytecodeTargetLevel target="18" />
   </component>
 </project>

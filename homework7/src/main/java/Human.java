@@ -4,6 +4,15 @@ import java.util.Random;
 
 public class Human {
 
+    //fields
+    private String name;
+    private String surname;
+    private Family family;
+    private int year;
+    private int iq;
+    private String[][] schedule;
+
+
     static {
         System.out.println("Human class is being loaded..");
     }
@@ -13,13 +22,6 @@ public class Human {
         System.out.println("A Human type object is created");
     }
 
-
-    private String name;
-    private String surname;
-    private Family family;
-    private int year;
-    private int iq;
-    private String[][] schedule;
 
 
     //constructors

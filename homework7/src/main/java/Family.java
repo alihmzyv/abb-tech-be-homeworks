@@ -4,19 +4,22 @@ import java.util.*;
 
 public class Family implements HumanCreator {
 
-    static {
-        System.out.println("Family class is being loaded..");
-    }
-
-    //non-static
-    {
-        System.out.println("A Family type object is created");
-    }
-
+    //fields
     final private Human mother;
     final private Human father;
     private Human[] children;
     private Pet pet;
+
+
+    //static block
+    static {
+        System.out.println("Family class is being loaded..");
+    }
+
+    //non-static block
+    {
+        System.out.println("A Family type object is created");
+    }
 
 
     //constructors: at least mother and father should be given, children array is created empty
@@ -57,7 +60,7 @@ public class Family implements HumanCreator {
 
 
 
-    //getters and setters (none for mother and father, since they are final
+    //getters and setters (none for mother and father, since they are final)
     public Human getMother() {
         return mother;
     }
@@ -191,7 +194,7 @@ public class Family implements HumanCreator {
 
         //set child's surname to his or her father's one
         String surname = father.getSurname();
-        child.setSurname(String.format("%s", (sex == 0) ? surname : surname + "a"));
+        child.setSurname(String.format("%s", (sex == 0) ? surname : surname + "a")); //a suffix addition to female surnames
 
         //set child's IQ to average of those of his or her mother and father
         child.setIq((father.getIq() + mother.getIq()) / 2);
