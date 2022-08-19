@@ -15,20 +15,23 @@ public class FamilyService {
 
     //methods
     public List<Family> getAllFamilies() {
+        //returns the list of all the families
         return familyDao.getAllFamilies();
     }
 
     public void displayAllFamilies() {
+        //prints the data about all families
         int[] i = {0};
         familyDao.getAllFamilies()
                 .forEach(family -> System.out.printf("Family %d:\n%s\n\n", ++i[0], family));
     }
 
     public List<Family> getAllFamiliesBiggerThan(int count) {
-        //get families bigger than specified to return
+        // prints the info about families whose number of members are greater than count parameter
+        // and returns the list of those families
         List<Family> familiesBigger = familyDao.getAllFamilies().stream()
                 .filter(family -> family.countFamily() > count)
-                .collect(Collectors.toCollection(ArrayList<Family>::new));
+                .collect(Collectors.toList()); //may return unmodifiable list
 
         //display families bigger than specified
         int[] i = {0};
@@ -39,10 +42,11 @@ public class FamilyService {
     }
 
     public List<Family> getAllFamiliesLessThan(int count) {
-        //get families less than specified to return
+        // prints the info about families whose number of members are less than count parameter
+        // and returns the list of those families
         List<Family> familiesLess = familyDao.getAllFamilies().stream()
                 .filter(family -> family.countFamily() < count)
-                .collect(Collectors.toCollection(ArrayList<Family>::new));
+                .collect(Collectors.toList()); //may return unmodifiable list
 
         //display families less than specified
         int[] i = {0};
@@ -52,22 +56,32 @@ public class FamilyService {
         return familiesLess;
     }
 
-    public long countFamiliesWithMemberNumber(long count) {
-        return familyDao.getAllFamilies().stream()
+    public int countFamiliesWithMemberNumber(int count) {
+        //returns the number of families whose number of members are equal to count parameter
+        return (int) familyDao.getAllFamilies().stream()
                 .filter(family -> family.countFamily() == count)
                 .count();
     }
 
     public void createNewFamily (Human mother, Human father) {
+        //creates and adds a new family with given mother and father to database
         familyDao.saveFamily(new Family(mother, father));
     }
 
     public boolean deleteFamilyByIndex(int index) {
+        //deletes the family at index if index is in range and returns true, otherwise false
         return familyDao.deleteFamily(index);
     }
 
     public Family bornChild(Family family, String sex) {
+        // returns null if family is not found in database or sex is not correctly typed and passed
+        // otherwise creates new Human with random name based on passed sex and the parents from family found
+        // updates the family by adding child
+        // returns updated family
+
+        sex = sex.trim().toLowerCase(); //extra spaces, case-insensitivity is allowed
         Family familyFound = familyDao.getFamily(family);
+
         if (!(sex.equals("masculine") || sex.equals("feminine")) ||
                 familyFound == null) {
             return null;
@@ -79,29 +93,31 @@ public class FamilyService {
 
         child.setFamily(familyFound); //reference to the current family
 
-        //random name (you need to create a list of names in advance)
+        //random name
         Map<String, List<String>> namesMap = new HashMap<>();
         //put male names
         namesMap.put("masculine", Arrays.asList("Ali", "Farid", "Kanan", "Ramin"));
         //put female names
         namesMap.put("feminine", Arrays.asList("Farida", "Gunel", "Aytac", "Lala"));
 
-        //set child's name randomly
+        //set child's name randomly but based on sex
         child.setName(namesMap.get(sex).get(new Random().nextInt(namesMap.get(sex).size())));
 
-        //set child's surname to his or her father's one
+        //set child's surname to that of his or her father's
         String surname = familyFound.getFather().getSurname();
-        child.setSurname(String.format("%s", (sex.equals("masculine")) ? surname : surname + "a")); //a suffix addition to female surnames
+        child.setSurname(String.format("%s", (sex.equals("masculine")) ? surname : surname + "a")); //add a suffix if girl
 
         //set child's IQ to average of those of his or her mother and father
-        child.setIq((familyFound.getFather().getIq() + familyFound.getMother().getIq()) / 2);
+        child.setIq((familyFound.getFather().getIq() + familyFound.getMother().getIq()) / 2); //based on parents data
 
-        familyFound.addChild(child);
+        familyFound.addChild(child); //update family
 
         return familyFound;
     }
 
     public Family adoptChild(Family family, Human human) {
+        // if family is not found in database, returns null
+        // otherwise updates family found by adding human as child and returns updated family
         Family familyFound = familyDao.getFamily(family);
         if (familyFound == null) {
             return null;
@@ -111,25 +127,31 @@ public class FamilyService {
     }
 
     public void deleteAllChildrenOlderThan(int age) {
+        //deletes all the children in database older than given age if it finds any
         familyDao.getAllFamilies().
                 forEach(family ->
-                        family.getChildren().removeIf(child -> child.getYear() < Calendar.getInstance().get(Calendar.YEAR) + 1900 - age));
+                        family.getChildren().removeIf(child -> (Calendar.getInstance().get(Calendar.YEAR) - child.getYear()) > age));
     }
 
-    public long count() {
+    public int count() {
+        // returns the number of families in database
         return familyDao.getAllFamilies().size();
     }
 
-    public Family getFamilybyId(int index) {
+    public Family getFamilyById(int index) {
         return familyDao.getFamilyByIndex(index);
     }
 
     public List<Pet> getPets(int index) {
+        // returns the pets of family found at given index as unmodifiable list if index is correct
+        // otherwise returns null
         Family familyFound = familyDao.getFamilyByIndex(index);
         return familyFound != null ? familyFound.getPet().stream().toList() : null;
     }
 
     public boolean addPet(int index, Pet pet) {
+        // adds the pet to the pets of family found at given index if index is correct and returns true
+        // otherwise returns false
         Family familyFound = familyDao.getFamilyByIndex(index);
         if (familyFound == null) {
             return false;
