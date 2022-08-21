@@ -8,7 +8,7 @@ public class Family implements HumanCreator {
     final private Human mother;
     final private Human father;
     private List<Human> children = new ArrayList<>(); //initialized as an empty list as required before (refer to hw 5)
-    private Set<Pet> pet;
+    private Set<Pet> pet = new HashSet<>();
 
 
     //static block
@@ -44,7 +44,7 @@ public class Family implements HumanCreator {
     public Family(Human mother, Human father, Set<Pet> pet) {
         this.mother = mother;
         this.father = father;
-        this.pet = pet;
+        this.pet = new HashSet<>(pet); //get mutable set
 
         this.mother.setFamily(this);
         this.father.setFamily(this);

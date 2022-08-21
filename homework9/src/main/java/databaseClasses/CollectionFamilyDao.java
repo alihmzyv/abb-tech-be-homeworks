@@ -3,13 +3,14 @@ package databaseClasses;
 
 import Classes.Family;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CollectionFamilyDao implements FamilyDao {
-    private List<Family> familyData;
+    final private List<Family> familyData;
 
     public CollectionFamilyDao(List<Family> familyData) {
-        this.familyData = familyData;
+        this.familyData = new ArrayList<>(familyData); //get mutable list in any case
     }
 
     //implementation of Classes.Family Dao

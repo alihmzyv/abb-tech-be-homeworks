@@ -8,7 +8,7 @@ public abstract class Pet {
 
 
     static {
-        System.out.println("Classes.Pet class is being loaded..");
+        System.out.println("Pet class is being loaded..");
     }
 
 

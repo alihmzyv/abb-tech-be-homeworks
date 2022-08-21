@@ -112,6 +112,10 @@ public class Human {
     public void greetPet() {
         //now pet is Set<Classes.Pet>, modified to greet all the pets
         Set<Pet> pets = family.getPet();
+        if (pets.isEmpty()) {
+            System.out.println("Hello, I have no pet.");
+            return;
+        }
         List<String> namesOfPets = new ArrayList<>();
         for (Pet pet: pets) {
             namesOfPets.add(pet.getNickname());
@@ -122,6 +126,10 @@ public class Human {
     public void describePet() {
         //now pet is Set<Classes.Pet>, modified to describe all the pets
         Set<Pet> pets = family.getPet();
+        if (pets.isEmpty()) {
+            System.out.println("Hello, I have no pet.");
+            return;
+        }
         StringBuilder sb = new StringBuilder();
         sb.append("I have a ");
 
@@ -165,7 +173,7 @@ public class Human {
         /*
         Classes.Human{name='Name', surname='Surname', year=1, iq=1, schedule=[[day, task], [day_2, task_2]]}
          */
-        return String.format("Classes.Human{name=%s, surname=%s, year=%d, iq=%d, schedule=%s}",
+        return String.format("Human{name=%s, surname=%s, year=%d, iq=%d, schedule=%s}",
                 name, surname, year, iq, schedule);
     }
 

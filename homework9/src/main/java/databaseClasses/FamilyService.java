@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class FamilyService {
-    private FamilyDao familyDao;
+    final private FamilyDao familyDao;
 
     public FamilyService(FamilyDao familyDao) {
         this.familyDao = familyDao;
@@ -33,7 +33,7 @@ public class FamilyService {
                 .filter(family -> family.countFamily() > count)
                 .collect(Collectors.toList()); //may return unmodifiable list
 
-        //display families bigger than specified
+//        display families bigger than specified
         int[] i = {0};
         familiesBigger
                 .forEach(family -> System.out.printf("Family %d:\n%s\n\n", ++i[0], family));
@@ -86,6 +86,8 @@ public class FamilyService {
                 familyFound == null) {
             return null;
         }
+        Human mother = familyFound.getMother();
+        Human father = familyFound.getFather();
 
 
         //create Classes.Man or Classes.Woman object based on random sex
@@ -104,11 +106,13 @@ public class FamilyService {
         child.setName(namesMap.get(sex).get(new Random().nextInt(namesMap.get(sex).size())));
 
         //set child's surname to that of his or her father's
-        String surname = familyFound.getFather().getSurname();
+        String surname = father.getSurname();
         child.setSurname(String.format("%s", (sex.equals("masculine")) ? surname : surname + "a")); //add a suffix if girl
 
+        child.setYear(Math.min(father.getYear(), mother.getYear()) + 18); //minimum birth year
+
         //set child's IQ to average of those of his or her mother and father
-        child.setIq((familyFound.getFather().getIq() + familyFound.getMother().getIq()) / 2); //based on parents data
+        child.setIq((father.getIq() + mother.getIq()) / 2); //based on parents data
 
         familyFound.addChild(child); //update family
 
