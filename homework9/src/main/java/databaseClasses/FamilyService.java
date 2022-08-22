@@ -2,6 +2,8 @@ package databaseClasses;
 
 import Classes.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -134,7 +136,7 @@ public class FamilyService {
         //deletes all the children in database older than given age if it finds any
         familyDao.getAllFamilies().
                 forEach(family ->
-                        family.getChildren().removeIf(child -> (Calendar.getInstance().get(Calendar.YEAR) - child.getYear()) > age));
+                        family.getChildren().removeIf(child -> (LocalDate.now().getYear() - child.getYear()) > age));
     }
 
     public int count() {
