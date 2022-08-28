@@ -52,7 +52,7 @@ public class Main {
         familyController.displayAllFamilies();
 
 //        //getAllFamiliesBiggerThan
-        familyController.getAllFamiliesBiggerThan(2); //all families except family2
+        familyController.getAllFamiliesBiggerThan(2).forEach(System.out::println); //all families except family2
 
 //        //getAllFamiliesLessThan
         familyController.getAllFamiliesLessThan(3); //only family2
@@ -69,12 +69,12 @@ public class Main {
         familyController.displayAllFamilies();
 
         //bornChild
-        System.out.println(familyController.bornChild(family2, "FemiNIne")); //updated family displayed
-        System.out.println(familyController.getFamilybyId(1)); //database updated
+        System.out.println(familyController.bornChild(family2, "FemiNIne").get()); //updated family displayed
+        System.out.println(familyController.getFamilybyId(1).get()); //database updated
 
 
-        System.out.println(familyController.adoptChild(family2, new Man("Ali", "Gurbanov", "24/03/2001", 100))); //updated family displayed
-        System.out.println(familyController.getFamilybyId(1).getChildren()); //database updated
+        System.out.println(familyController.adoptChild(family2, new Man("Ali", "Gurbanov", "24/03/2001", 100)).get()); //updated family displayed
+        System.out.println(familyController.getFamilybyId(1).get().getChildren()); //database updated
 
 
 //        print all children older than 21
@@ -95,13 +95,13 @@ public class Main {
         System.out.println(familyController.count()); //4 families
 
         //getFamilyById
-        System.out.println(familyController.getFamilybyId(3));
+        System.out.println(familyController.getFamilybyId(3).get());
 
         //getPet
-        System.out.println(familyController.getPets(2)); //toplan
+        System.out.println(familyController.getPets(2).get()); //toplan
 
         //addPet
         familyController.addPet(2, new Dog());
-        System.out.println(familyController.getFamilybyId(2).getPet());
+        System.out.println(familyController.getFamilybyId(2).get().getPet().get());
     }
 }
