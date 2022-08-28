@@ -69,8 +69,8 @@ public class Family implements HumanCreator {
         this.children = children;
     }
 
-    public Set<Pet> getPet() {
-        return pet;
+    public Optional<Set<Pet>> getPet() {
+        return Optional.ofNullable(pet);
     }
 
     public void setPet(Set<Pet> pet) {
@@ -131,8 +131,9 @@ public class Family implements HumanCreator {
         children.forEach(child -> sb.append(String.format("Child %d=%s\n", ++i[0], child)));
 
         //append info about pets
-        int[] j = {0};
-        pet.forEach(pet -> sb.append(String.format("Pet %d=%s\n", ++j[0], pet)));
+        i[0] = 0;
+        getPet().ifPresent(pets -> pets
+                .forEach(pet -> sb.append(String.format("Pet %d=%s\n", ++i[0], pet))));
 
         return sb.toString();
     }
@@ -178,8 +179,12 @@ public class Family implements HumanCreator {
         child.setName(namesMap.get(sex).get(new Random().nextInt(namesMap.get(sex).size())));
 
         //set child's surname to his or her father's one
-        String surname = father.getSurname();
-        child.setSurname(String.format("%s", (sex == 0) ? surname : surname + "a")); //a suffix addition to female surnames
+        String surname = father.getSurname().orElse("XXX");
+        child.setSurname(surname);
+        if (!surname.equals("XXX") && child instanceof Woman) {
+            child.setSurname(surname + "a"); //a suffix addition to female surnames
+        }
+
 
         //set child's IQ to average of those of his or her mother and father
         child.setIq((father.getIq() + mother.getIq()) / 2);

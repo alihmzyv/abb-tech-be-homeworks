@@ -1,10 +1,7 @@
 import Classes.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.testng.AssertJUnit.assertEquals;
@@ -41,18 +38,13 @@ class FamilyTest {
 
         //append info about each children
         List<Human> children = family1.getChildren();
-        for (int i = 0; i < children.size(); i++) {
-            sb.append(String.format("Child %d=%s\n", i + 1, children.get(i)));
-        }
+        int[] id = new int[]{0};
+        children.forEach(child -> sb.append(String.format("Child %d=%s\n", ++id[0], child)));
 
         //append info about pets
-        Set<Pet> pets = family1.getPet();
-        if (pets != null) {
-            Iterator<Pet> petIterator = pets.iterator();
-            for (int i = 0; i < pets.size(); i++) {
-                sb.append(String.format("Pet %d=%s\n", i + 1, petIterator.next()));
-            }
-        }
+        Optional<Set<Pet>> pets = family1.getPet();
+        id[0] = 0;
+        pets.ifPresent(petsSet -> petsSet.forEach(pet -> sb.append(String.format("Pet %d=%s\n", ++id[0], pet))));
 
 
         String expected = sb.toString();
@@ -69,13 +61,13 @@ class FamilyTest {
         // * It is reflexive: for any non-null reference value x, x.equals(x) should return true.
 
         //create a Family object
-        Human father1 = new Human("Mammad", "Karimov", "21/09/1976", 100, Map.of(DayOfWeek.MONDAY, List.of("go to work")));
+        Human father1 = new Human("Mammad", "Karimov", "21/09/1978", 100, Map.of(DayOfWeek.MONDAY, List.of("go to work")));
         Human mother1 = new Human();
         Family family1 = new Family(mother1, father1);
 
         Human child1 = new Human();
         Human child2 = new Human("Anar", "Karimov", "21/09/1999", 101, Map.of(DayOfWeek.MONDAY, List.of("go to school")));
-        Human child3 = new Human("Ulkar", "Karimova", "21/09/1998", 99, Map.of(DayOfWeek.MONDAY, List.of("go to party")));
+        Human child3 = new Human("Ulkar", "Karimova", "21/09/1999", 99, Map.of(DayOfWeek.MONDAY, List.of("go to party")));
 
         family1.addChild(child1);
         family1.addChild(child2);
@@ -88,7 +80,7 @@ class FamilyTest {
         // * for any non-null reference values x and y, x.equals(y) should return true if and only if y.equals(x) returns true.
 
         //create a Family object
-        Human father2 = new Human("Mammad", "Karimov", "21/09/1976", 100, Map.of(DayOfWeek.MONDAY, List.of("go to work")));
+        Human father2 = new Human("Mammad", "Karimov", "21/09/1978", 100, Map.of(DayOfWeek.MONDAY, List.of("go to work")));
         Human mother2 = new Human();
         Family family2 = new Family(mother2, father2);
 
@@ -114,8 +106,8 @@ class FamilyTest {
         Family family3 = new Family(mother3, father3);
 
         Human child7 = new Human();
-        Human child8 = new Human("Anar", "Karimov", "21/09/1978", 101, Map.of(DayOfWeek.MONDAY, List.of("go to school")));
-        Human child9 = new Human("Ulkar", "Karimova", "21/09/1978", 99, Map.of(DayOfWeek.MONDAY, List.of("go to party")));
+        Human child8 = new Human("Anar", "Karimov", "21/09/1999", 101, Map.of(DayOfWeek.MONDAY, List.of("go to school")));
+        Human child9 = new Human("Ulkar", "Karimova", "21/09/1999", 99, Map.of(DayOfWeek.MONDAY, List.of("go to party")));
 
         family3.addChild(child7);
         family3.addChild(child8);

@@ -5,6 +5,7 @@ import Classes.Human;
 import Classes.Pet;
 
 import java.util.List;
+import java.util.Optional;
 
 public class FamilyController {
     private FamilyService familyService;
@@ -42,11 +43,11 @@ public class FamilyController {
         return familyService.deleteFamilyByIndex(index);
     }
 
-    public Family bornChild(Family family, String sex) {
+    public Optional<Family> bornChild(Family family, String sex) {
         return familyService.bornChild(family, sex);
     }
 
-    public Family adoptChild(Family family, Human human) {
+    public Optional<Family> adoptChild(Family family, Human human) {
         return familyService.adoptChild(family, human);
     }
 
@@ -58,11 +59,11 @@ public class FamilyController {
         return familyService.count();
     }
 
-    public Family getFamilybyId(int index) {
+    public Optional<Family> getFamilybyId(int index) {
         return familyService.getFamilyById(index);
     }
 
-    public List<Pet> getPets(int index) {
+    public Optional<List<Pet>> getPets(int index) {
         return familyService.getPets(index);
     }
 

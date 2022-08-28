@@ -1,6 +1,7 @@
 package Classes;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -17,8 +18,6 @@ public abstract class Pet {
     private int age;
     private int trickLevel;
     private Set<String> habits;
-
-
 
     {
         System.out.println("A Classes.Pet type object is created");
@@ -51,8 +50,8 @@ public abstract class Pet {
         this.species = species;
     }
 
-    public String getNickname() {
-        return nickname;
+    public Optional<String> getNickname() {
+        return Optional.ofNullable(nickname);
     }
 
     public void setNickname(String nickname) {
@@ -75,8 +74,8 @@ public abstract class Pet {
         this.trickLevel = trickLevel;
     }
 
-    public Set<String> getHabits() {
-        return habits;
+    public Optional<Set<String>> getHabits() {
+        return Optional.ofNullable(habits);
     }
 
     public void setHabits(Set<String> habits) {

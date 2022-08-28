@@ -13,8 +13,8 @@ class PetTest {
 
         //expected String to be returned
         String expected = String.format("%s{nickname=%s: Can fly: %s, Has %d legs, Has fur: %s; age=%d, tricklevel=%d, habits=%s}",
-                pet1.getSpecies(), pet1.getNickname(), pet1.getSpecies().canFly, pet1.getSpecies().numberOfLegs, pet1.getSpecies().hasFur,
-                pet1.getAge(), pet1.getTrickLevel(), pet1.getHabits());
+                pet1.getSpecies(), pet1.getNickname().get(), pet1.getSpecies().canFly, pet1.getSpecies().numberOfLegs, pet1.getSpecies().hasFur,
+                pet1.getAge(), pet1.getTrickLevel(), pet1.getHabits().get());
 
         assertEquals(expected, pet1.toString());
     }

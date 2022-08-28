@@ -23,6 +23,7 @@ public class Fish extends Pet {
     //override abstract methods of super class
     @Override
     public void respond() {
-        System.out.printf("Hello, owner. I am your %s: %s. I miss you!\n", getSpecies(), getNickname());
+        System.out.printf("Hello, owner. I am your %s: %s. I miss you!\n", getSpecies().toString().toLowerCase(),
+                getNickname().orElse("XXX"));
     }
 }

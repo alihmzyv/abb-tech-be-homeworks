@@ -75,19 +75,19 @@ public class FamilyService {
         return familyDao.deleteFamily(index);
     }
 
-    public Family bornChild(Family family, String sex) {
+    public Optional<Family> bornChild(Family family, String sex) {
         // returns null if family is not found in database or sex is not correctly typed and passed
         // otherwise creates new Human with random name based on passed sex and the parents from family found
         // updates the family by adding child
         // returns updated family
 
         sex = sex.trim().toLowerCase(); //extra spaces, case-insensitivity is allowed
-        Family familyFound = familyDao.getFamily(family);
+        Optional<Family> familyFoundOpt = familyDao.getFamily(family);
 
-        if (!(sex.equals("masculine") || sex.equals("feminine")) ||
-                familyFound == null) {
-            return null;
+        if (!(sex.equals("masculine") || sex.equals("feminine")) || familyFoundOpt.isEmpty()) {
+            return Optional.empty();
         }
+        Family familyFound = familyFoundOpt.get();
         Human mother = familyFound.getMother();
         Human father = familyFound.getFather();
 
@@ -107,8 +107,11 @@ public class FamilyService {
         child.setName(namesMap.get(sex).get(new Random().nextInt(namesMap.get(sex).size())));
 
         //set child's surname to that of his or her father's
-        String surname = father.getSurname();
-        child.setSurname(String.format("%s", (sex.equals("masculine")) ? surname : surname + "a")); //add a suffix if girl
+        String surname = father.getSurname().orElse("XXX");
+        child.setSurname(surname);
+        if (!surname.equals("XXX") && child instanceof Woman) {
+            child.setSurname(surname + "a"); //a suffix addition to female surnames
+        }
 
         //set birthDate to a legal minimum = younger parent birthdate + 18 years
         LocalDate earlierBirthDate = mother.getBirthDate().compareTo(father.getBirthDate()) > 0
@@ -120,18 +123,15 @@ public class FamilyService {
 
         familyFound.addChild(child); //update family
 
-        return familyFound;
+        return familyFoundOpt;
     }
 
-    public Family adoptChild(Family family, Human human) {
+    public Optional<Family> adoptChild(Family family, Human human) {
         // if family is not found in database, returns null
         // otherwise updates family found by adding human as child and returns updated family
-        Family familyFound = familyDao.getFamily(family);
-        if (familyFound == null) {
-            return null;
-        }
-        familyFound.addChild(human);
-        return familyFound;
+        Optional<Family> familyFoundOpt = familyDao.getFamily(family);
+        familyFoundOpt.ifPresent(familyFound -> family.addChild(human));
+        return familyFoundOpt;
     }
 
     public void deleteAllChildrenOlderThan(int age) {
@@ -147,25 +147,30 @@ public class FamilyService {
         return familyDao.getAllFamilies().size();
     }
 
-    public Family getFamilyById(int index) {
+    public Optional<Family> getFamilyById(int index) {
         return familyDao.getFamilyByIndex(index);
     }
 
-    public List<Pet> getPets(int index) {
+    public Optional<List<Pet>> getPets(int index) {
         // returns the pets of family found at given index as unmodifiable list if index is correct
         // otherwise returns null
-        Family familyFound = familyDao.getFamilyByIndex(index);
-        return familyFound != null ? familyFound.getPet().stream().toList() : null;
+        return familyDao.getFamilyByIndex(index)
+                .flatMap(family -> family.getPet().map(set -> set.stream().toList()));
     }
 
     public boolean addPet(int index, Pet pet) {
         // adds the pet to the pets of family found at given index if index is correct and returns true
         // otherwise returns false
-        Family familyFound = familyDao.getFamilyByIndex(index);
-        if (familyFound == null) {
-            return false;
+        Optional<Family> familyFoundOpt = familyDao.getFamilyByIndex(index);
+        if (familyFoundOpt.isPresent()) {
+            Set<Pet> pets = familyFoundOpt
+                    .flatMap(Family::getPet)
+                    .orElseGet(HashSet::new);
+            pets.add(pet);
+            familyFoundOpt.get().setPet(pets);
+            return true;
         }
-        return familyFound.getPet().add(pet);
+        return false;
     }
 
 

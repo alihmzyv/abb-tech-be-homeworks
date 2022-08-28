@@ -141,31 +141,32 @@ class FamilyServiceTest {
 
     @Test
     void getFamilyByIdTest1() {
-        assertEquals(family3, familyService.getFamilyById(2));
+        assertEquals(family3, familyService.getFamilyById(2).orElse(null));
     }
 
     @Test
     void getFamilyByIdTest2() {
-        assertNull(familyService.getFamilyById(4));
+        assertNull(familyService.getFamilyById(4).orElse(null));
     }
 
     @Test
     void getFamilyByIdTest3() {
-        assertNull(familyService.getFamilyById(- 1));
+        assertNull(familyService.getFamilyById(- 1).orElse(null));
     }
 
 
     @Test
     void getPets() {
-        assertEquals(List.of(new Dog("Toplan", 2, 33, Set.of("barking"))), familyService.getPets(2));
+        assertEquals(List.of(new Dog("Toplan", 2, 33, Set.of("barking"))),
+                familyService.getPets(2).orElse(null));
     }
 
     @Test
     void addPet() {
         DomesticCat domesticCat = new DomesticCat("Rock", 1, 35, Set.of("sleeping"));
         familyService.addPet(2, domesticCat);
-        List<Pet> pets = List.of(new Dog("Toplan", 2, 33, Set.of("barking")), domesticCat);
+        List<Pet> pets = List.of(domesticCat, new Dog("Toplan", 2, 33, Set.of("barking")));
         assertEquals(pets,
-                     familyService.getPets(2));
+                     familyService.getPets(2).orElse(null));
     }
 }

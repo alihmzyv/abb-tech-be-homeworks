@@ -5,12 +5,13 @@ import Classes.Family;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CollectionFamilyDao implements FamilyDao {
     final private List<Family> familyData;
 
     public CollectionFamilyDao(List<Family> familyData) {
-        this.familyData = new ArrayList<>(familyData); //get mutable list in any case
+        this.familyData = new ArrayList<>(familyData); //get modifiable list in any case
     }
 
     //implementation of Classes.Family Dao
@@ -21,12 +22,12 @@ public class CollectionFamilyDao implements FamilyDao {
     }
 
     @Override
-    public Family getFamilyByIndex(int index) {
-        //returns the family at index if index is in range, otherwise null
+    public Optional<Family> getFamilyByIndex(int index) {
+        //returns the Optional of family at index if index is in range, otherwise empty Optional
         if (!isIndex(index)) {
-            return null;
+            return Optional.empty();
         }
-        return familyData.get(index);
+        return Optional.ofNullable(familyData.get(index));
     }
 
     @Override
@@ -57,13 +58,13 @@ public class CollectionFamilyDao implements FamilyDao {
     }
 
     @Override
-    public Family getFamily(Family family) {
-        //if family is found in list, returns the family found, otherwise null;
+    public Optional<Family> getFamily(Family family) {
+        //if family is found in list, returns the Optional of the family found first, otherwise empty Optional;
         int index = familyData.indexOf(family);
         if (!isIndex(index)) {
-            return null;
+            return Optional.empty();
         }
-        return familyData.get(index);
+        return Optional.ofNullable(familyData.get(index));
     }
 
     private boolean isIndex(int index) {

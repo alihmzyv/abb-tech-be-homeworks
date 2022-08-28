@@ -3,6 +3,8 @@ package Classes;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public class Human {
 
@@ -68,24 +70,24 @@ public class Human {
 
 
     //getters and setters
-    public String getName() {
-        return name;
+    public Optional<String> getName() {
+        return Optional.ofNullable(name);
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
+    public Optional<String> getSurname() {
+        return Optional.ofNullable(surname);
     }
 
     public void setSurname(String surname) {
         this.surname = surname;
     }
 
-    public Family getFamily() {
-        return family;
+    public Optional<Family> getFamily() {
+        return Optional.ofNullable(family);
     }
 
     public void setFamily(Family family) {
@@ -108,8 +110,8 @@ public class Human {
         this.iq = iq;
     }
 
-    public Map<DayOfWeek, List<String>> getSchedule() {
-        return schedule;
+    public Optional<Map<DayOfWeek, List<String>>> getSchedule() {
+        return Optional.ofNullable(schedule);
     }
 
     public void setSchedule(Map<DayOfWeek, List<String>> schedule) {
@@ -127,61 +129,53 @@ public class Human {
 
     public void greetPet() {
         //now pet is Set<Classes.Pet>, modified to greet all the pets
-        Set<Pet> pets = family.getPet();
-        if (pets.isEmpty()) {
-            System.out.println("Hello, I have no pet.");
-            return;
-        }
-        List<String> namesOfPets = new ArrayList<>();
-        for (Pet pet: pets) {
-            namesOfPets.add(pet.getNickname());
-        }
-        System.out.printf("Hello, %s\n", namesOfPets.toString().replaceAll("\\[\\]", ""));
+        Optional<Set<Pet>> pets = family.getPet();
+        //action if pets isPresent
+        Consumer<Set<Pet>> action = petsSet -> {
+            System.out.print("Hello");
+            petsSet.forEach(pet -> System.out.printf(", %s\n", pet.getNickname().orElse("XXX")));
+        };
+        //action if pets isEmpty
+        Runnable emptyAction = () -> System.out.println("Hello, I have no pet.");
+        pets.ifPresentOrElse(action, emptyAction);
     }
 
     public void describePet() {
         //now pet is Set<Classes.Pet>, modified to describe all the pets
-        Set<Pet> pets = family.getPet();
-        if (pets.isEmpty()) {
-            System.out.println("Hello, I have no pet.");
-            return;
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append("I have a ");
-
-        for (Pet pet: pets) {
-            sb.append(String.format("%s, he is %d years old, he is %s;\n",
-                    pet.getSpecies(), pet.getAge(), pet.getTrickLevel() > 50 ? "very sly" : "almost not sly"));
-        }
-
-        System.out.println(sb);
+        Optional<Set<Pet>> pets = family.getPet();
+        //action if pets isPresent
+        Consumer<Set<Pet>> action = petsSet -> {
+            System.out.print("I have a ");
+            petsSet.forEach(pet -> System.out.printf("%s, he is %d years old, he is %s;\n", pet.getSpecies(),
+                            pet.getAge(),
+                            pet.getTrickLevel() > 50 ? "very sly" : "almost not sly"));
+        };
+        //action if pets isEmpty
+        Runnable emptyAction = () -> System.out.println("Hello, I have no pet.");
+        pets.ifPresentOrElse(action, emptyAction);
     }
 
     public boolean feedPet(boolean itIsTimeForFeeding) {
-        //returns true if all the pets were fed, otherwise false
-        String feed = "Hm... I will feed %s";
-        String doNotFeed = "I think %s is not hungry.";
-        int countOnesFed = 0;
-        Set<Pet> pets = family.getPet();
-
-        if (itIsTimeForFeeding) {
-            countOnesFed = family.getPet().size();
-            System.out.println("Hm... I will feed all the pets");
-        }
-        else {
-            for (Pet pet: pets) {
-                String nicknameOfPet = pet.getNickname();
-                if (pet.getTrickLevel() > new Random().nextInt(101)) {
-                    System.out.printf(feed + "\n", nicknameOfPet);
-                    countOnesFed++;
-                }
-                else {
-                        System.out.printf(doNotFeed + "\n", nicknameOfPet);
-                }
-            }
-        }
-
-        return countOnesFed == pets.size();
+        //returns true if there are pets of family and all the pets were fed, otherwise false
+        String feed = "Hm... I will feed %s\n";
+        String doNotFeed = "I think %s is not hungry.\n";
+        Optional<Set<Pet>> pets = family.getPet();
+        int[] countOnesFed = new int[]{0};
+        //action if pets isPresent
+        Consumer<Set<Pet>> action = petsSet -> petsSet.forEach(pet -> {
+                    String nicknameOfPet = pet.getNickname().orElse("XXX");
+                    if (pet.getTrickLevel() > new Random().nextInt(101)) {
+                        System.out.printf(feed, nicknameOfPet);
+                        countOnesFed[0]++;
+                    }
+                    else {
+                            System.out.printf(doNotFeed, nicknameOfPet);
+                    }
+                    });
+        //action if pets isEmpty
+        Runnable emptyAction = () -> System.out.println("I have no pet.");
+        pets.ifPresentOrElse(action, emptyAction);
+        return pets.filter(petsSet -> countOnesFed[0] == petsSet.size()).isPresent();
     }
 
     private long convertToEpochMilli(String date) {
@@ -200,9 +194,11 @@ public class Human {
         Classes.Human{name='Name', surname='Surname', birthday=1, iq=1, schedule=[[day, task], [day_2, task_2]]}
          */
         return String.format("Human{name=%s, surname=%s, birthdate=%s, iq=%d, schedule=%s}",
-                name, surname,
+                getName().orElse("XXX"),
+                getSurname().orElse("XXX"),
                 LocalDate.ofInstant(Instant.ofEpochMilli(birthDate), ZoneId.systemDefault()).
-                        format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), iq, schedule);
+                        format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                iq, getSchedule().orElseGet(HashMap::new));
     }
 
 
@@ -221,8 +217,9 @@ public class Human {
     @Override
     public int hashCode() {
         int result = Objects.hash(name, surname, birthDate, iq,
-                (family != null ? family.getMother().name: null),
-                (family != null ? family.getFather().name: null), schedule);
+                getFamily().flatMap(family -> family.getMother().getName()).orElse(null),
+                getFamily().flatMap(family -> family.getMother().getName()).orElse(null),
+                schedule);
         return result;
     }
 
