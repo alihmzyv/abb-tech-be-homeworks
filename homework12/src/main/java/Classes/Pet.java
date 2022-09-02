@@ -6,22 +6,21 @@ import java.util.Set;
 
 
 public abstract class Pet {
-
-
-    static {
-        System.out.println("Pet class is being loaded..");
-    }
-
-
     private Species species = Species.UNKNOWN;
     private String nickname;
     private int age;
     private int trickLevel;
     private Set<String> habits;
 
+    static {
+        System.out.println("Pet class is being loaded..");
+    }
+
     {
         System.out.println("A Classes.Pet type object is created");
     }
+
+
     //constructors
     //constructor #1
     public Pet(String nickname) {
@@ -108,7 +107,8 @@ public abstract class Pet {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pet pet = (Pet) o;
-        return age == pet.age && trickLevel == pet.trickLevel && species == pet.species && Objects.equals(nickname, pet.nickname);
+        return age == pet.age && trickLevel == pet.trickLevel && species == pet.species &&
+                Objects.equals(nickname, pet.nickname);
     }
 
     @Override

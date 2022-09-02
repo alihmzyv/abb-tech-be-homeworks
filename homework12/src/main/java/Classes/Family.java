@@ -8,7 +8,7 @@ public class Family implements HumanCreator {
     //fields
     final private Human mother;
     final private Human father;
-    private List<Human> children = new ArrayList<>(); //initialized as an empty list as required before (refer to hw 5)
+    private List<Human> children = new ArrayList<>(); //initialized as an empty list as required (refer to hw 5)
     private Set<Pet> pet;
 
 
@@ -45,7 +45,7 @@ public class Family implements HumanCreator {
     public Family(Human mother, Human father, Set<Pet> pet) {
         this.mother = mother;
         this.father = father;
-        this.pet = new HashSet<>(pet); //get mutable set
+        this.pet = new HashSet<>(pet); //get modifiable set
 
         this.mother.setFamily(this);
         this.father.setFamily(this);
@@ -132,7 +132,6 @@ public class Family implements HumanCreator {
 
         child.setFamily(this); //reference to the current family
 
-
         //random name (you need to create a list of names in advance)
         Map<Integer, List<String>> namesMap = new HashMap<>();
         //put male names
@@ -149,7 +148,6 @@ public class Family implements HumanCreator {
         if (!surname.equals("XXX") && child instanceof Woman) {
             child.setSurname(surname + "a"); //a suffix addition to female surnames
         }
-
 
         //set child's IQ to average of those of his or her mother and father
         child.setIq((father.getIq() + mother.getIq()) / 2);
@@ -213,7 +211,8 @@ public class Family implements HumanCreator {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Family family = (Family) o;
-        return Objects.equals(mother, family.mother) && Objects.equals(father, family.father) && Objects.equals(children, family.children) && Objects.equals(pet, family.pet);
+        return Objects.equals(mother, family.mother) && Objects.equals(father, family.father) &&
+                Objects.equals(children, family.children) && Objects.equals(pet, family.pet);
     }
 
     @Override

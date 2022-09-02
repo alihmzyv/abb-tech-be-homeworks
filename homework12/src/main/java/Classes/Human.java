@@ -53,7 +53,8 @@ public class Human {
     }
 
     //constructor #4
-    public Human(String name, String surname, Family family, String birthDate, int iq, Map<DayOfWeek, List<String>> schedule) {
+    public Human(String name, String surname, Family family, String birthDate, int iq,
+                 Map<DayOfWeek, List<String>> schedule) {
         this.name = name;
         this.surname = surname;
         this.family = family;
@@ -123,7 +124,8 @@ public class Human {
     //methods
     public String describeAge() {
         Period period = Period.between(this.getBirthDate(), LocalDate.now());
-        return String.format("Years: %d, Months: %d, Days: %d", period.getYears(), period.getMonths(), period.getDays());
+        return String.format("Years: %d, Months: %d, Days: %d",
+                period.getYears(), period.getMonths(), period.getDays());
     }
 
     public void greetPet() {
@@ -145,9 +147,10 @@ public class Human {
         //action if pets isPresent
         Consumer<Set<Pet>> action = petsSet -> {
             System.out.print("I have a ");
-            petsSet.forEach(pet -> System.out.printf("%s, he is %d years old, he is %s;\n", pet.getSpecies(),
-                            pet.getAge(),
-                            pet.getTrickLevel() > 50 ? "very sly" : "almost not sly"));
+            petsSet.forEach(pet -> System.out.printf("%s, he is %d years old, he is %s;\n",
+                    pet.getSpecies(),
+                    pet.getAge(),
+                    pet.getTrickLevel() > 50 ? "very sly" : "almost not sly"));
         };
         //action if pets isEmpty
         Runnable emptyAction = () -> System.out.println("Hello, I have no pet.");
@@ -222,8 +225,10 @@ public class Human {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Human human = (Human) o;
-        return birthDate == human.birthDate && iq == human.iq && Objects.equals(name, human.name) && Objects.equals(surname, human.surname) && Objects.equals(schedule, human.schedule) &&
-                (family == null || (Objects.equals(family.getMother().name, human.family.getMother().name) && Objects.equals(family.getFather().name, human.family.getFather().name)));
+        return birthDate == human.birthDate && iq == human.iq && Objects.equals(name, human.name) &&
+                Objects.equals(surname, human.surname) && Objects.equals(schedule, human.schedule) &&
+                (family == null || (Objects.equals(family.getMother().name, human.family.getMother().name) &&
+                        Objects.equals(family.getFather().name, human.family.getFather().name)));
     }
 
 

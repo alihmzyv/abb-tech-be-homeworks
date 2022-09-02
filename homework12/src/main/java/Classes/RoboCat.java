@@ -23,8 +23,8 @@ public class RoboCat extends Pet implements NastyThings {
     //override abstract methods of super class
     @Override
     public void respond() {
-        System.out.printf("Hello, owner. I am your %s: %s. I miss you!\n", getSpecies().toString().toLowerCase(),
-                getNickname().orElse("No nickname"));
+        System.out.printf("Hello, owner. I am your %s: %s. I miss you!\n",
+                getSpecies().toString().toLowerCase(), getNickname().orElse("No nickname"));
     }
 
     //dogs and cats can foul

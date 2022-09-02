@@ -25,7 +25,8 @@ public class FamilyService {
         //prints the data about all families
         int[] i = {0};
         familyDao.getAllFamilies()
-                .forEach(family -> System.out.printf("Family %d:\n%s\n\n", ++i[0], family.prettyFormat()));
+                .forEach(family ->
+                        System.out.printf("Family %d:\n%s\n\n", ++i[0], family.prettyFormat()));
     }
 
     public List<Family> getAllFamiliesBiggerThan(int count) {
@@ -38,7 +39,8 @@ public class FamilyService {
 //        display families bigger than specified
         int[] i = {0};
         familiesBigger
-                .forEach(family -> System.out.printf("Family %d:\n%s\n\n", ++i[0], family.prettyFormat()));
+                .forEach(family ->
+                        System.out.printf("Family %d:\n%s\n\n", ++i[0], family.prettyFormat()));
 
         return familiesBigger;
     }
@@ -53,7 +55,8 @@ public class FamilyService {
         //display families less than specified
         int[] i = {0};
         familiesLess
-                .forEach(family -> System.out.printf("Family %d:\n%s\n\n", ++i[0], family.prettyFormat()));
+                .forEach(family ->
+                        System.out.printf("Family %d:\n%s\n\n", ++i[0], family.prettyFormat()));
 
         return familiesLess;
     }
@@ -163,8 +166,7 @@ public class FamilyService {
         // otherwise returns false
         Optional<Family> familyFoundOpt = familyDao.getFamilyByIndex(index);
         if (familyFoundOpt.isPresent()) {
-            Set<Pet> pets = familyFoundOpt
-                    .flatMap(Family::getPet)
+            Set<Pet> pets = familyFoundOpt.flatMap(Family::getPet)
                     .orElseGet(HashSet::new);
             pets.add(pet);
             familyFoundOpt.get().setPet(pets);
