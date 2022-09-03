@@ -206,6 +206,11 @@ public class ConsoleApp {
     }
 
     private static void editFamilyByIndex() throws EmptyDatabaseException {
+        //edit the family at the index by input or return to main Menu
+        //can edit family by:
+        //1 -> giveBirth
+        //2 -> adoptChild
+        //or 3 -> return to main Menu
         while (true) {
             System.out.println(subMenu1);
             System.out.println("Please enter the number of an item from the submenu displayed.");
