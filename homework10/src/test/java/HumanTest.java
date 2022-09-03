@@ -1,5 +1,5 @@
-import Classes.DayOfWeek;
-import Classes.Human;
+import classes.DayOfWeek;
+import classes.Human;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-import Classes.Dog;
+import classes.Dog;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
