@@ -90,7 +90,8 @@ public class ConsoleApp {
                         case 9 -> deleteAllChildrenOlderThan();
                         default -> System.out.println("Incorrect menu item. Try again.");
                     }
-                } catch (EmptyDatabaseException exc) {
+                }
+                catch (EmptyDatabaseException exc) {
                     System.out.println(exc.getMessage());
                 }
             }
@@ -149,38 +150,22 @@ public class ConsoleApp {
 
     private static void displayAllFamilies() throws EmptyDatabaseException {
         //displays all the families
-        if (getFc().isEmpty() || getFc().get().count() == 0) {
-            throw new EmptyDatabaseException("There is no family in the database.\n" +
-                    "Please fill with test data (1, main Menu) or create new family (6, main Menu)");
-        }
-        fc.displayAllFamilies();
+        ConsoleApp.requiresNonEmpty().displayAllFamilies();
     }
 
     private static void displayAllFamiliesBiggerThan() throws EmptyDatabaseException {
         //displays all the families whose number of members is greater than the positive integer input by user
-        if (getFc().isEmpty() || getFc().get().count() == 0) {
-            throw new EmptyDatabaseException("There is no family in the database.\n" +
-                    "Please fill with test data (1, main Menu) or create new family (6, main Menu)");
-        }
-        fc.getFamilyService().displayIndexed(fc.getAllFamiliesBiggerThan(getFamilyMemberNumber()));
+        ConsoleApp.requiresNonEmpty().getFamilyService().displayIndexed(fc.getAllFamiliesBiggerThan(getFamilyMemberNumber()));
     }
 
     private static void displayAllFamiliesLessThan() throws EmptyDatabaseException {
         //displays all the families whose number of members is less than the positive integer input by user
-        if (getFc().isEmpty() || getFc().get().count() == 0) {
-            throw new EmptyDatabaseException("There is no family in the database.\n" +
-                    "Please fill with test data (1, main Menu) or create new family (6, main Menu)");
-        }
-        fc.getFamilyService().displayIndexed(fc.getAllFamiliesLessThan(getFamilyMemberNumber()));
+        ConsoleApp.requiresNonEmpty().getFamilyService().displayIndexed(fc.getAllFamiliesLessThan(getFamilyMemberNumber()));
     }
 
     private static void displayCountOfFamiliesWithMemberNumber() throws EmptyDatabaseException {
         //displays all the families whose number of members is equal to the positive integer input by user
-        if (getFc().isEmpty() || getFc().get().count() == 0) {
-            throw new EmptyDatabaseException("There is no family in the database.\n" +
-                    "Please fill with test data (1, main Menu) or create new family (6, main Menu)");
-        }
-        System.out.println(fc.countFamiliesWithMemberNumber(getFamilyMemberNumber()));
+        System.out.println(ConsoleApp.requiresNonEmpty().countFamiliesWithMemberNumber(getFamilyMemberNumber()));
     }
 
     private static void createNewFamily() {
@@ -198,11 +183,7 @@ public class ConsoleApp {
 
     private static void deleteFamilyByIndex() throws EmptyDatabaseException {
         //deletes the family at the index input by user
-        if (getFc().isEmpty() || getFc().get().count() == 0) {
-            throw new EmptyDatabaseException("There is no family in the database.\n" +
-                    "Please fill with test data (1, main Menu) or create new family (6, main Menu)");
-        }
-        fc.deleteFamilyByIndex(getCorrectIndexInput() - 1);
+        ConsoleApp.requiresNonEmpty().deleteFamilyByIndex(getCorrectIndexInput() - 1);
     }
 
     private static void editFamilyByIndex() throws EmptyDatabaseException {
@@ -242,11 +223,7 @@ public class ConsoleApp {
         //adds child to the family at the index input by user
         //sex and the name of the child are also input by user
         //date of birth is set to the date the method called
-        if (getFc().isEmpty() || getFc().get().count() == 0) {
-            throw new EmptyDatabaseException("There is no family in the database.\n" +
-                    "Please fill with test data (1, main Menu) or create new family (6, main Menu)");
-        }
-        Family family = fc.getFamilybyId(getCorrectIndexInput() - 1).get();
+        Family family = ConsoleApp.requiresNonEmpty().getFamilybyId(getCorrectIndexInput() - 1).get();
 
         String sex = "xxx";
         while (!(sex.equals("boy") || sex.equals("girl"))) {
@@ -272,26 +249,29 @@ public class ConsoleApp {
             }
         }
 
-        family.addChild(child);
+        fc.adoptChild(family, child);
     }
 
     private static void adoptChild() throws EmptyDatabaseException {
         //adds a Human as child to the family at the index input by user
         //details of child as a Human are input by user
-        if (getFc().isEmpty() || getFc().get().count() == 0) {
-            throw new EmptyDatabaseException("There is no family in the database.\n" +
-                    "Please fill with test data (1, main Menu) or create new family (6, main Menu)");
-        }
-        fc.adoptChild(fc.getFamilybyId(getCorrectIndexInput() - 1).get(), getHuman());
+        ConsoleApp.requiresNonEmpty().adoptChild(fc.getFamilybyId(getCorrectIndexInput() - 1).get(), getHuman());
     }
 
     private static void deleteAllChildrenOlderThan() throws EmptyDatabaseException {
+        ConsoleApp.requiresNonEmpty();
+        System.out.println("Enter the age:");
+        fc.deleteAllChildrenOlderThan(getNonNegativeIntInput());
+    }
+
+    private static FamilyController requiresNonEmpty() throws EmptyDatabaseException {
         if (getFc().isEmpty() || getFc().get().count() == 0) {
             throw new EmptyDatabaseException("There is no family in the database.\n" +
                     "Please fill with test data (1, main Menu) or create new family (6, main Menu)");
         }
-        System.out.println("Enter the age:");
-        fc.deleteAllChildrenOlderThan(getNonNegativeIntInput());
+        else {
+            return getFc().get();
+        }
     }
 
     private static Human getHuman() {

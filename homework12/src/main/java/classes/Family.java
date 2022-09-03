@@ -9,6 +9,7 @@ public class Family implements HumanCreator, Serializable {
     @Serial
     private static final long serialVersionUID = -4513371079516044524L;
     //fields
+    private static int maxMember = 10; //default = 10, can use setMaxMember to change
     final private Human mother;
     final private Human father;
     private List<Human> children = new ArrayList<>(); //initialized as an empty list as required (refer to hw 5)
@@ -81,9 +82,16 @@ public class Family implements HumanCreator, Serializable {
         this.pet = pet;
     }
 
+    public static void setMaxMember(int maxMember) {
+        Family.maxMember = maxMember;
+    }
 
     //methods
     public boolean addChild(Human human) {
+        if (this.countFamily() == maxMember) {
+            throw new FamilyOverFlowException(String.format("Family cannot have more members than %d.\n" +
+                    "Did not add the child.", maxMember));
+        }
         children.add(human); //add the child
         human.setFamily(this); //sets the families of both the parameter object and element of field array children
         return true; //added

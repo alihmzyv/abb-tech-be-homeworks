@@ -1,6 +1,7 @@
 package database;
 
 import classes.Family;
+import classes.FamilyOverFlowException;
 import classes.Human;
 import classes.Pet;
 
@@ -55,11 +56,23 @@ public class FamilyController {
     }
 
     public Optional<Family> bornChild(Family family, String sex) {
-        return familyService.bornChild(family, sex);
+        try {
+            return familyService.bornChild(family, sex);
+        }
+        catch (FamilyOverFlowException exc) {
+            System.out.println(exc.getMessage());
+            return Optional.empty();
+        }
     }
 
     public Optional<Family> adoptChild(Family family, Human human) {
-        return familyService.adoptChild(family, human);
+        try {
+            return familyService.adoptChild(family, human);
+        }
+        catch (FamilyOverFlowException exc) {
+            System.out.println(exc.getMessage());
+            return Optional.empty();
+        }
     }
 
     public void deleteAllChildrenOlderThan(int age) {
