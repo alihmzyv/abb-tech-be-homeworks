@@ -1,5 +1,6 @@
 package classes;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,10 @@ public final class Woman extends Human {
     public Woman() {
     }
 
+    public static Woman of(Human human) {
+        return new Woman(human.getName().orElse("XXX"), human.getSurname().orElse("XXX"),
+                human.getBirthDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")), human.getIq());
+    }
     //methods
     public void makeup() {
         System.out.println("I applied makeup");

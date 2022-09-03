@@ -39,33 +39,17 @@ public class FamilyService {
     public List<Family> getAllFamiliesBiggerThan(int count) {
         // prints the info about families whose number of members are greater than count parameter
         // and returns the list of those families
-        List<Family> familiesBigger = familyDao.getAllFamilies().stream()
+        return familyDao.getAllFamilies().stream()
                 .filter(family -> family.countFamily() > count)
                 .collect(Collectors.toList()); //may return unmodifiable list
-
-//        display families bigger than specified
-        int[] i = {0};
-        familiesBigger
-                .forEach(family ->
-                        System.out.printf("Family %d:\n%s\n\n", ++i[0], family.prettyFormat()));
-
-        return familiesBigger;
     }
 
     public List<Family> getAllFamiliesLessThan(int count) {
         // prints the info about families whose number of members are less than count parameter
         // and returns the list of those families
-        List<Family> familiesLess = familyDao.getAllFamilies().stream()
+        return familyDao.getAllFamilies().stream()
                 .filter(family -> family.countFamily() < count)
                 .collect(Collectors.toList()); //may return unmodifiable list
-
-        //display families less than specified
-        int[] i = {0};
-        familiesLess
-                .forEach(family ->
-                        System.out.printf("Family %d:\n%s\n\n", ++i[0], family.prettyFormat()));
-
-        return familiesLess;
     }
 
     public int countFamiliesWithMemberNumber(int count) {

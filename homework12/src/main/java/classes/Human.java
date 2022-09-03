@@ -62,7 +62,7 @@ public class Human implements Serializable {
         this.name = name;
         this.surname = surname;
         this.family = family;
-        family.addChild(this); //since the family is an already created object and his mother and father fields are final, human can be added to family only as child
+        family.addChild(this); //since the family is an already created object and his mother and father fields are final, human can be aded to family only as child
         this.birthDate = convertToEpochMilli(birthDate);
         this.iq = iq;
         this.schedule = schedule;
@@ -193,7 +193,7 @@ public class Human implements Serializable {
     }
 
     private long convertToEpochMilli(String date) {
-        return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern("d/M/yyyy"))
                 .atStartOfDay().toInstant(ZoneId.systemDefault().getRules().getOffset(LocalDateTime.now()))
                 .toEpochMilli();
     }
@@ -211,7 +211,7 @@ public class Human implements Serializable {
                 getName().orElse("XXX"),
                 getSurname().orElse("XXX"),
                 LocalDate.ofInstant(Instant.ofEpochMilli(birthDate), ZoneId.systemDefault()).
-                        format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                        format(DateTimeFormatter.ofPattern("d/M/yyyy")),
                 iq, getSchedule().orElseGet(HashMap::new));
     }
 

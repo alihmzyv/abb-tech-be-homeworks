@@ -19,7 +19,7 @@ class HumanTest {
         //expected String to be returned
         String expected = String.format("Human{name=%s, surname=%s, birthdate=%s, iq=%d, schedule=%s}",
                 father1.getName().orElse("XXX"), father1.getSurname().orElse("XXX"),
-                father1.getBirthDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                father1.getBirthDate().format(DateTimeFormatter.ofPattern("d/M/yyyy")),
                 father1.getIq(),
                 father1.getSchedule().orElse(null));
 

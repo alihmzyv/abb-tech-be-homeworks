@@ -1,0 +1,3 @@
+- 1. Give birth to a baby
+- 2. Adopt a child
+- 3. Return to main menu
