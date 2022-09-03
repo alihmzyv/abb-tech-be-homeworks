@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class FamilyService {
+public class FamilyService implements PrettyDisplayable<Family> {
     final private FamilyDao familyDao;
 
     public FamilyService(FamilyDao familyDao) {
@@ -23,39 +23,23 @@ public class FamilyService {
 
     public void displayAllFamilies() {
         //prints the data about all families
-        int[] i = {0};
-        familyDao.getAllFamilies()
-                .forEach(family -> System.out.printf("Family %d:\n%s\n\n", ++i[0], family));
+        displayIndexed(getAllFamilies());
     }
 
     public List<Family> getAllFamiliesBiggerThan(int count) {
         // prints the info about families whose number of members are greater than count parameter
         // and returns the list of those families
-        List<Family> familiesBigger = familyDao.getAllFamilies().stream()
+        return familyDao.getAllFamilies().stream()
                 .filter(family -> family.countFamily() > count)
                 .collect(Collectors.toList()); //may return unmodifiable list
-
-//        display families bigger than specified
-        int[] i = {0};
-        familiesBigger
-                .forEach(family -> System.out.printf("Family %d:\n%s\n\n", ++i[0], family));
-
-        return familiesBigger;
     }
 
     public List<Family> getAllFamiliesLessThan(int count) {
         // prints the info about families whose number of members are less than count parameter
         // and returns the list of those families
-        List<Family> familiesLess = familyDao.getAllFamilies().stream()
+        return familyDao.getAllFamilies().stream()
                 .filter(family -> family.countFamily() < count)
                 .collect(Collectors.toList()); //may return unmodifiable list
-
-        //display families less than specified
-        int[] i = {0};
-        familiesLess
-                .forEach(family -> System.out.printf("Family %d:\n%s\n\n", ++i[0], family));
-
-        return familiesLess;
     }
 
     public int countFamiliesWithMemberNumber(int count) {
@@ -174,4 +158,13 @@ public class FamilyService {
     }
 
 
+    @Override
+    public void displayIndexed(List<Family> list) {
+        if (list.isEmpty()) {
+            return;
+        }
+        String className = list.get(0).getClass().getName();
+        int[] i = {0};
+        list.forEach(family -> System.out.printf("%s %d:\n%s\n\n", className, ++i[0], family));
+    }
 }

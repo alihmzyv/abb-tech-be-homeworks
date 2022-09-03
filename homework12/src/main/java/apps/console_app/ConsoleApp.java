@@ -50,7 +50,7 @@ public class ConsoleApp {
         return Optional.ofNullable(fc);
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         String command = "";
         int menuItemNum;
 
@@ -162,7 +162,7 @@ public class ConsoleApp {
             throw new EmptyDatabaseException("There is no family in the database.\n" +
                     "Please fill with test data (1, main Menu) or create new family (6, main Menu)");
         }
-        prettyFamilyDisplayer(fc.getAllFamiliesBiggerThan(getFamilyMemberNumber()));
+        fc.getFamilyService().displayIndexed(fc.getAllFamiliesBiggerThan(getFamilyMemberNumber()));
     }
 
     private static void displayAllFamiliesLessThan() throws EmptyDatabaseException {
@@ -171,7 +171,7 @@ public class ConsoleApp {
             throw new EmptyDatabaseException("There is no family in the database.\n" +
                     "Please fill with test data (1, main Menu) or create new family (6, main Menu)");
         }
-        prettyFamilyDisplayer(fc.getAllFamiliesLessThan(getFamilyMemberNumber()));
+        fc.getFamilyService().displayIndexed(fc.getAllFamiliesLessThan(getFamilyMemberNumber()));
     }
 
     private static void displayCountOfFamiliesWithMemberNumber() throws EmptyDatabaseException {

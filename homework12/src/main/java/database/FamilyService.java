@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class FamilyService {
+public class FamilyService implements PrettyDisplayable<Family> {
     final private FamilyDao familyDao;
 
     public FamilyService(FamilyDao familyDao) {
@@ -30,10 +30,7 @@ public class FamilyService {
 
     public void displayAllFamilies() {
         //prints the data about all families
-        int[] i = {0};
-        familyDao.getAllFamilies()
-                .forEach(family ->
-                        System.out.printf("Family %d:\n%s\n\n", ++i[0], family.prettyFormat()));
+        displayIndexed(getAllFamilies());
     }
 
     public List<Family> getAllFamiliesBiggerThan(int count) {
@@ -167,4 +164,15 @@ public class FamilyService {
     }
 
 
+    @Override
+    public void displayIndexed(List<Family> list) {
+        if (list.isEmpty()) {
+            return;
+        }
+
+        String className = list.get(0).getClass().getName();
+
+        int[] i = {0};
+        list.forEach(family -> System.out.printf("%s %d:\n%s\n\n", className, ++i[0], family.prettyFormat()));
+    }
 }
