@@ -33,7 +33,7 @@ public class ConsoleApp {
             System.out.println("Could not find menu.txt file in the application directory.");
             System.exit(1);
         } catch (IOException exc) {
-            System.out.println("Could not read the menu");
+            System.out.println("Could not read the menu.");
             System.exit(1);
         }
 
@@ -41,7 +41,7 @@ public class ConsoleApp {
         try {
             subMenu1 = loadSubMenu();
         } catch (IOException e) {
-            System.out.println("Could not load the submenu");
+            System.out.println("Could not load the submenu.");
             System.exit(1);
         }
     }
@@ -60,7 +60,7 @@ public class ConsoleApp {
                 try {
                     displayMenu();
                     System.out.println("Please enter the number of an item from the menu to proceed or " +
-                            "enter \"exit\". to exit");
+                            "enter \"exit\". to exit.");
                     command = sn.nextLine(); //can be "exit" or menu item
                     menuItemNum = Integer.parseInt(command);
                 } catch (NumberFormatException exc) {
@@ -127,17 +127,21 @@ public class ConsoleApp {
         System.out.println(mainMenu);
     }
 
+    private static void displaySubmenu1() {
+        System.out.println(subMenu1);
+    }
+
     private static boolean fillWithTestData() {
         //tries to fill initialize FamilyController fc with the data from the path:
         //\abb-tech-be-homeworks\homework12\src\main\java\apps\console_app\menu.txt
 
         try (ObjectInputStream ois = new ObjectInputStream(
-                new FileInputStream("homework12/src/main/java/apps/console_app/test_data.bin"))) {
+                new FileInputStream("homework12/src/main/java/apps/console_app/test_files/test_data.bin"))) {
             fc = new FamilyController(new FamilyService(new CollectionFamilyDao((List<Family>) ois.readObject())));
             System.out.println("Filled database with test data");
             return true;
         } catch (FileNotFoundException exc) {
-            System.out.println("Could not find test_data.bin file in the application directory.");
+            System.out.println("Could not find test_data.bin file in the application directory/test_files");
             return false;
         } catch (IOException exc) {
             System.out.println("Could not read the data.");
@@ -193,10 +197,9 @@ public class ConsoleApp {
         //2 -> adoptChild
         //or 3 -> return to main Menu
         while (true) {
-            System.out.println(subMenu1);
+            displaySubmenu1();
             System.out.println("Please enter the number of an item from the submenu displayed.");
             int command = getPositiveIntInput();
-
 
             //call the corresponding method
             switch (command) {
@@ -267,7 +270,7 @@ public class ConsoleApp {
     private static FamilyController requiresNonEmpty() throws EmptyDatabaseException {
         if (getFc().isEmpty() || getFc().get().count() == 0) {
             throw new EmptyDatabaseException("There is no family in the database.\n" +
-                    "Please fill with test data (1, main Menu) or create new family (6, main Menu)");
+                    "Please fill with test data (1, main Menu) or create new family (6, main Menu).");
         }
         else {
             return getFc().get();
@@ -281,7 +284,7 @@ public class ConsoleApp {
         System.out.println("Enter surname:");
         String surname = getStringInput();
         System.out.println("Enter iq value:");
-        int iq = getPositiveIntInput();
+        int iq = getNonNegativeIntInput();
         while (true) {
             try {
                 System.out.println("Enter birth year: (e.g. 1999)");
@@ -318,14 +321,14 @@ public class ConsoleApp {
             try {
                 input = sn.nextInt();
                 if (input < 0) {
-                    System.out.println("Please enter a non-negative integer");
+                    System.out.println("Please enter a non-negative integer. Try again.");
                     continue;
                 }
                 sn.nextLine();
                 return input;
             }
             catch (InputMismatchException exc) {
-                System.out.println("Please enter an integer");
+                System.out.println("Please enter an integer. Try again.");
                 sn.nextLine();
             }
         }
@@ -337,7 +340,7 @@ public class ConsoleApp {
         while (true) {
             input = getNonNegativeIntInput();
             if (input == 0) {
-                System.out.println("Please enter a positive integer");
+                System.out.println("Please enter a positive integer. Try again.");
                 continue;
             }
             return input;
@@ -346,7 +349,7 @@ public class ConsoleApp {
 
     private static int getFamilyMemberNumber() {
         //used to get family member number input for the methods requiring as parameters
-        System.out.println("Enter the number of members: ");
+        System.out.println("Enter the number of members:");
         return getNonNegativeIntInput();
     }
 
