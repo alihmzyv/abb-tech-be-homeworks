@@ -7,5 +7,4 @@
 - 7. Create a new family
 - 8. Delete a family by its index in the general list
 - 9. Edit a family by its index in the general list
-- 10. Remove all children over the age of majority (all families remove children over the age of majority - let us assume they have grown up)
-  - request interested age
+- 10. Remove all children over the age of majority

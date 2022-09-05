@@ -46,8 +46,12 @@ public class ConsoleApp {
         }
     }
 
-    public static Optional<FamilyController> getFc() {
-        return Optional.ofNullable(fc);
+    public static FamilyController getFc() throws EmptyDatabaseException {
+        if (fc == null || fc.count() == 0) {
+            throw new EmptyDatabaseException("There is no family in the database.\n" +
+                    "Please fill with test data (1, main menu) or create new family (6, main menu).");
+        }
+        return fc;
     }
 
     public static void main(String[] args) {
@@ -147,29 +151,29 @@ public class ConsoleApp {
             System.out.println("Could not read the data.");
             return false;
         } catch (ClassNotFoundException exc) {
-            System.out.println(exc.getMessage());
+            System.out.println("Could not deserialize data.");
             return false;
         }
     }
 
     private static void displayAllFamilies() throws EmptyDatabaseException {
         //displays all the families
-        ConsoleApp.requiresNonEmpty().displayAllFamilies();
+        getFc().displayAllFamilies();
     }
 
     private static void displayAllFamiliesBiggerThan() throws EmptyDatabaseException {
         //displays all the families whose number of members is greater than the positive integer input by user
-        ConsoleApp.requiresNonEmpty().getFamilyService().displayIndexed(fc.getAllFamiliesBiggerThan(getFamilyMemberNumber()));
+        getFc().getFamilyService().displayIndexed(fc.getAllFamiliesBiggerThan(getFamilyMemberNumber()));
     }
 
     private static void displayAllFamiliesLessThan() throws EmptyDatabaseException {
         //displays all the families whose number of members is less than the positive integer input by user
-        ConsoleApp.requiresNonEmpty().getFamilyService().displayIndexed(fc.getAllFamiliesLessThan(getFamilyMemberNumber()));
+        getFc().getFamilyService().displayIndexed(fc.getAllFamiliesLessThan(getFamilyMemberNumber()));
     }
 
     private static void displayCountOfFamiliesWithMemberNumber() throws EmptyDatabaseException {
         //displays all the families whose number of members is equal to the positive integer input by user
-        System.out.println(ConsoleApp.requiresNonEmpty().countFamiliesWithMemberNumber(getFamilyMemberNumber()));
+        System.out.println(getFc().countFamiliesWithMemberNumber(getFamilyMemberNumber()));
     }
 
     private static void createNewFamily() {
@@ -179,16 +183,19 @@ public class ConsoleApp {
         Woman mother = Woman.of(getHuman());
         System.out.println("Enter information about the father:");
         Man father = Man.of(getHuman());
-        if (getFc().isEmpty()) { //if database is not initialized, initialize first
-            fc = new FamilyController(new FamilyService(new CollectionFamilyDao(new ArrayList<>())));
+        try {
+            getFc().createNewFamily(mother, father);
         }
-        fc.createNewFamily(mother, father);
+        catch (EmptyDatabaseException exc) {//if database was empty, initialize it
+            fc = new FamilyController(new FamilyService(new CollectionFamilyDao(new ArrayList<>())));
+            fc.createNewFamily(mother, father);
+        }
         System.out.println("new Family was created and added to the database.");
     }
 
     private static void deleteFamilyByIndex() throws EmptyDatabaseException {
         //deletes the family at the index input by user
-        ConsoleApp.requiresNonEmpty().deleteFamilyByIndex(getCorrectIndexInput() - 1);
+        getFc().deleteFamilyByIndex(getCorrectIndexInput() - 1);
         System.out.println("Family deleted.");
     }
 
@@ -230,7 +237,7 @@ public class ConsoleApp {
         //adds child to the family at the index input by user
         //sex and the name of the child are also input by user
         //date of birth is set to the date the method called
-        Family family = ConsoleApp.requiresNonEmpty().getFamilybyId(getCorrectIndexInput() - 1).get();
+        Family family = getFc().getFamilybyId(getCorrectIndexInput() - 1).get();
 
         String sex = "xxx";
         while (!(sex.equals("boy") || sex.equals("girl"))) {
@@ -262,25 +269,14 @@ public class ConsoleApp {
     private static void adoptChild() throws EmptyDatabaseException {
         //adds a Human as child to the family at the index input by user
         //details of child as a Human are input by user
-        ConsoleApp.requiresNonEmpty().adoptChild(fc.getFamilybyId(getCorrectIndexInput() - 1).get(), getHuman());
+        getFc().adoptChild(fc.getFamilybyId(getCorrectIndexInput() - 1).get(), getHuman());
     }
 
     private static void deleteAllChildrenOlderThan() throws EmptyDatabaseException {
-        ConsoleApp.requiresNonEmpty();
         System.out.println("Enter the age:");
         int age = getNonNegativeIntInput();
-        fc.deleteAllChildrenOlderThan(age);
+        getFc().deleteAllChildrenOlderThan(age);
         System.out.printf("Children over age %s were deleted.\n", age);
-    }
-
-    private static FamilyController requiresNonEmpty() throws EmptyDatabaseException {
-        if (getFc().isEmpty() || getFc().get().count() == 0) {
-            throw new EmptyDatabaseException("There is no family in the database.\n" +
-                    "Please fill with test data (1, main menu) or create new family (6, main menu).");
-        }
-        else {
-            return getFc().get();
-        }
     }
 
     private static Human getHuman() {
