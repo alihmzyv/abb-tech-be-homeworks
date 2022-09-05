@@ -276,7 +276,7 @@ public class ConsoleApp {
     private static FamilyController requiresNonEmpty() throws EmptyDatabaseException {
         if (getFc().isEmpty() || getFc().get().count() == 0) {
             throw new EmptyDatabaseException("There is no family in the database.\n" +
-                    "Please fill with test data (1, main Menu) or create new family (6, main Menu).");
+                    "Please fill with test data (1, main menu) or create new family (6, main menu).");
         }
         else {
             return getFc().get();
