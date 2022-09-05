@@ -90,7 +90,9 @@ public class ConsoleApp {
                                 System.out.println("""
                                         Could not load the local data.
                                         May be the local file is empty.
-                                        Please fill with local data (1, main Menu) or create new family (7, main Menu).""");
+                                        Please, firstly, create new family (7, main menu),
+                                        save it locally (2, main menu),
+                                        then try again""");
                             }
                             catch (ClassNotFoundException exc) {
                                 System.out.println("Data could not be deserialized.");
@@ -299,7 +301,7 @@ public class ConsoleApp {
     private static FamilyController requiresNonEmpty() throws EmptyDatabaseException {
         if (getFc().isEmpty() || getFc().get().count() == 0) {
             throw new EmptyDatabaseException("There is no family in the database.\n" +
-                    "Please fill with local data (1, main Menu) or create new family (7, main Menu).");
+                    "Please fill with local data (1, main menu) or create new family (7, main menu).");
         }
         else {
             return getFc().get();
