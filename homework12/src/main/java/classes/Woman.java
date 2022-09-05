@@ -1,10 +1,14 @@
 package classes;
 
+import java.io.Serial;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
 public final class Woman extends Human {
+    @Serial
+    private static final long serialVersionUID = 2372906671425885172L;
+
     //constructors
     public Woman(String name, String surname, String birthDate) {
         super(name, surname, birthDate);

@@ -14,7 +14,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
-import java.util.stream.IntStream;
 
 public class ConsoleApp {
     private static String mainMenu;
@@ -79,15 +78,16 @@ public class ConsoleApp {
                 //call the corresponding method
                 try {
                     switch (menuItemNum) {
-                        case 1 -> fillWithTestData();
-                        case 2 -> displayAllFamilies();
-                        case 3 -> displayAllFamiliesBiggerThan();
-                        case 4 -> displayAllFamiliesLessThan();
-                        case 5 -> displayCountOfFamiliesWithMemberNumber();
-                        case 6 -> createNewFamily();
-                        case 7 -> deleteFamilyByIndex();
-                        case 8 -> editFamilyByIndex();
-                        case 9 -> deleteAllChildrenOlderThan();
+                        case 1 -> loadData();
+                        case 2 -> save();
+                        case 3 -> displayAllFamilies();
+                        case 4 -> displayAllFamiliesBiggerThan();
+                        case 5 -> displayAllFamiliesLessThan();
+                        case 6 -> displayCountOfFamiliesWithMemberNumber();
+                        case 7 -> createNewFamily();
+                        case 8 -> deleteFamilyByIndex();
+                        case 9 -> editFamilyByIndex();
+                        case 10 -> deleteAllChildrenOlderThan();
                         default -> System.out.println("Incorrect menu item. Try again.");
                     }
                 }
@@ -101,9 +101,9 @@ public class ConsoleApp {
     private static String loadMenu() throws IOException {
         //tries to initialize mainMenu static field
         //menu.txt file should be located in the path:
-        //\abb-tech-be-homeworks\homework12\src\main\java\apps\console_app\menu.txt
+        //\abb-tech-be-homeworks\homework13\src\main\java\apps\console_app\menu.txt
         try (BufferedReader br = new BufferedReader(
-                new FileReader("homework12/src/main/java/apps/console_app/menu_files/menu.txt"))) {
+                new FileReader("homework13/src/main/java/apps/console_app/menu_files/menu.txt"))) {
             StringBuilder sb = new StringBuilder();
             br.lines().forEach(line -> sb.append(line).append("\n"));
             return sb.toString();
@@ -113,9 +113,9 @@ public class ConsoleApp {
     private static String loadSubMenu() throws IOException {
         //tries to return the giveBirth submenu of the Main Menu
         //sub_menu.txt.txt file should be located in the path:
-        //\abb-tech-be-homeworks\homework12\src\main\java\apps\console_app\sub_menu.txt
+        //\abb-tech-be-homeworks\homework13\src\main\java\apps\console_app\sub_menu.txt
         try (BufferedReader br = new BufferedReader(
-                new FileReader("homework12/src/main/java/apps/console_app/menu_files/sub_menu.txt"))) {
+                new FileReader("homework13/src/main/java/apps/console_app/menu_files/sub_menu.txt"))) {
             StringBuilder sb = new StringBuilder();
             br.lines().forEach(line -> sb.append(line).append("\n"));
             return sb.toString();
@@ -131,25 +131,44 @@ public class ConsoleApp {
         System.out.println(subMenu1);
     }
 
-    private static boolean fillWithTestData() {
-        //tries to fill initialize FamilyController fc with the data from the path:
-        //\abb-tech-be-homeworks\homework12\src\main\java\apps\console_app\menu.txt
-
+    private static boolean loadData() {
+        //tries to initialize fc with local data
         try (ObjectInputStream ois = new ObjectInputStream(
-                new FileInputStream("homework12/src/main/java/apps/console_app/test_files/test_data.bin"))) {
+                new FileInputStream("homework13/src/main/java/apps/console_app/database_files/data.bin"))) {
             fc = new FamilyController(new FamilyService(new CollectionFamilyDao((List<Family>) ois.readObject())));
-            System.out.println("Filled database with test data");
+            System.out.println("Filled database with local data.");
             return true;
         } catch (FileNotFoundException exc) {
-            System.out.println("Could not find test_data.bin file in the application directory/test_files");
+            System.out.println("Could not find data.bin file in the application directory/database_files");
             return false;
         } catch (IOException exc) {
-            System.out.println("Could not read the data.");
+            System.out.println("Could not read the data. The local file might be empty.\n" +
+                    "Please create new family or families (7, Main Menu), then save (2, Main Menu), then try again.");
             return false;
         } catch (ClassNotFoundException exc) {
             System.out.println(exc.getMessage());
             return false;
         }
+    }
+
+    private static boolean save() {
+        //tries to save the current CollectionFamilyDao locally
+        try (ObjectOutputStream oos = new ObjectOutputStream(
+                new FileOutputStream("homework13/src/main/java/apps/console_app/database_files/data.bin"))) {
+            oos.writeObject(ConsoleApp.requiresNonEmpty().getAllFamilies());
+            System.out.println("Current family database saved locally.");
+            return true;
+        }
+        catch (FileNotFoundException exc) {
+            System.out.println("Could not find data.bin file in the application directory/database_files");
+        }
+        catch (IOException exc) {
+            System.out.println("Could not save the data.");
+        }
+        catch (EmptyDatabaseException exc) {
+            System.out.println(exc.getMessage());
+        }
+        return false;
     }
 
     private static void displayAllFamilies() throws EmptyDatabaseException {
@@ -276,7 +295,7 @@ public class ConsoleApp {
     private static FamilyController requiresNonEmpty() throws EmptyDatabaseException {
         if (getFc().isEmpty() || getFc().get().count() == 0) {
             throw new EmptyDatabaseException("There is no family in the database.\n" +
-                    "Please fill with test data (1, main Menu) or create new family (6, main Menu).");
+                    "Please fill with local data (1, main Menu) or create new family (7, main Menu).");
         }
         else {
             return getFc().get();
