@@ -78,7 +78,24 @@ public class ConsoleApp {
                 //call the corresponding method
                 try {
                     switch (menuItemNum) {
-                        case 1 -> loadData();
+                        case 1 -> {
+                            try (ObjectInputStream ois = new ObjectInputStream(
+                                    new FileInputStream("homework13/src/main/java/apps/console_app/database_files/data.bin"))) {
+                                loadData((List<Family>) ois.readObject());
+                            }
+                            catch (FileNotFoundException exc) {
+                                System.out.println("Could not find the local data file.");
+                            }
+                            catch (IOException exc) {
+                                System.out.println("""
+                                        Could not load the local data.
+                                        May be the local file is empty.
+                                        Please fill with local data (1, main Menu) or create new family (7, main Menu).""");
+                            }
+                            catch (ClassNotFoundException exc) {
+                                System.out.println("Data could not be deserialized.");
+                            }
+                        }
                         case 2 -> save();
                         case 3 -> displayAllFamilies();
                         case 4 -> displayAllFamiliesBiggerThan();
@@ -131,24 +148,11 @@ public class ConsoleApp {
         System.out.println(subMenu1);
     }
 
-    private static boolean loadData() {
-        //tries to initialize fc with local data
-        try (ObjectInputStream ois = new ObjectInputStream(
-                new FileInputStream("homework13/src/main/java/apps/console_app/database_files/data.bin"))) {
-            fc = new FamilyController(new FamilyService(new CollectionFamilyDao((List<Family>) ois.readObject())));
-            System.out.println("Filled database with local data.");
-            return true;
-        } catch (FileNotFoundException exc) {
-            System.out.println("Could not find data.bin file in the application directory/database_files");
-            return false;
-        } catch (IOException exc) {
-            System.out.println("Could not read the data. The local file might be empty.\n" +
-                    "Please create new family or families (7, Main Menu), then save (2, Main Menu), then try again.");
-            return false;
-        } catch (ClassNotFoundException exc) {
-            System.out.println(exc.getMessage());
-            return false;
-        }
+    private static boolean loadData(List<Family> dataToLoad) {
+        //tries to initialize fc with the given List<Family> data
+        fc = new FamilyController(new FamilyService(new CollectionFamilyDao(dataToLoad)));
+        System.out.println("Filled database with local data.");
+        return true;
     }
 
     private static boolean save() {
